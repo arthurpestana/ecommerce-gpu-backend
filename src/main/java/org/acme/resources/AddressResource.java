@@ -1,0 +1,103 @@
+package org.acme.resources;
+
+import org.acme.dtos.address.AddressRequestDTO;
+import org.acme.dtos.address.AddressResponseDTO;
+import org.acme.dtos.shared.pagination.PaginationRequestDTO;
+import org.acme.dtos.shared.pagination.PaginationResponseDTO;
+import org.acme.services.address.AddressService;
+
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.core.Response.Status;
+
+@Path("/address")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class AddressResource {
+
+    private static final int MAX_PAGE_SIZE = 100;
+
+    @Inject
+    AddressService addressService;
+
+    @GET
+    public Response findAll(
+        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("limit")  @DefaultValue("10") int limit
+    ) {
+        offset = Math.max(0, offset);
+        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
+
+        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationResponseDTO<AddressResponseDTO> addresses = addressService.findAllAddresses(pagination);
+
+        return Response.ok(addresses)
+                .header("X-Offset", offset)
+                .header("X-Limit", limit)
+                .header("X-Total-Count", addresses.total())
+                .build();
+    }
+
+    @GET
+    @Path("/city/{city}")
+    public Response findByCity(
+        @PathParam("city") String city,
+        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("limit")  @DefaultValue("10") int limit
+    ) {
+        offset = Math.max(0, offset);
+        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
+
+        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationResponseDTO<AddressResponseDTO> addresses = addressService.findAddressByCity(city, pagination);
+        return Response.ok(addresses).build();
+    }
+
+    @GET
+    @Path("/user/{userId}")
+    public Response findByUser(
+        @PathParam("userId") Long userId,
+        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("limit")  @DefaultValue("10") int limit
+    ) {
+        offset = Math.max(0, offset);
+        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
+
+        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationResponseDTO<AddressResponseDTO> addresses = addressService.findAddressByUser(userId, pagination);
+        return Response.ok(addresses).build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response findById(@PathParam("id") Long id) {
+        return addressService.findAddressById(id)
+                .map(Response::ok)
+                .orElse(Response.status(Status.NOT_FOUND))
+                .build();
+    }
+
+    @POST
+    public Response create(@Valid AddressRequestDTO dto) {
+        AddressResponseDTO created = addressService.createAddress(dto);
+        return Response.status(Status.CREATED).entity(created).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response update(@PathParam("id") Long id, @Valid AddressRequestDTO dto) {
+        AddressResponseDTO updated = addressService.updateAddress(id, dto);
+        return Response.ok(updated).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        Integer deleted = addressService.deleteAddress(id);
+        return (deleted == 1)
+                ? Response.noContent().build()
+                : Response.status(Status.NOT_FOUND).build();
+    }
+}

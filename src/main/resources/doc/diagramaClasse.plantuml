@@ -1,0 +1,148 @@
+@startuml
+
+left to right direction
+
+enum PapelUsuario {
+  CLIENTE
+  ADMINISTRADOR
+}
+
+enum StatusPedido {
+  AGUARDANDO_PAGAMENTO
+  PROCESSANDO
+  ENVIADO
+  ENTREGUE
+  CANCELADO
+  DEVOLVIDO
+}
+
+enum MetodoPagamento {
+  CARTAO_CREDITO
+  CARTAO_DEBITO
+  PIX
+  BOLETO_BANCARIO
+}
+
+enum StatusPagamento {
+  PENDENTE
+  AUTORIZADO
+  PAGO
+  FALHOU
+  ESTORNADO
+}
+
+abstract class Pessoa {
+  - id : Int
+  - nome: String
+  - email: String
+}
+
+class Usuario extends Pessoa {
+  - telefone : String
+  - cpf : String
+  - senhaHash : String
+  - papel : PapelUsuario
+  - ativo : Boolean
+}
+
+class Endereco {
+  - id : Int
+  - rua : String
+  - numero : String
+  - complemento : String
+  - bairro : String
+  - cidade : String
+  - estado : String
+  - cep : String
+  - padraoEntrega : Boolean
+  - padraoCobranca : Boolean
+}
+
+class Gpu {
+  - id : Int
+  - nome : String
+  - descricao : String
+  - preco : Decimal
+  - ativo : Boolean
+  - quantidadeDisponivel : Int
+  - dataLancamento : Date
+}
+
+class Modelo {
+  - id: Int
+  - nome: String
+  - anoLancamento: Date
+}
+
+class Fabricante extends Pessoa {
+  - cnpj : String
+  - pais : String
+}
+
+class Categoria {
+  - id : Int
+  - nome : String
+  - descricao : String
+}
+
+class Tecnologias {
+  - id : Int
+  - nome : String
+  - descricao : String
+}
+
+class ImagemGpu {
+  - id : Int
+  - urlImagem : String
+  - textoAlternativo : String
+}
+
+class EstoqueEntrada {
+  - id : Int
+  - quantidade : Int
+  - dataMovimentacao : Date
+}
+
+class Pedido {
+  - id : Int
+  - status : StatusPedido
+  - valorTotal : Decimal
+  - dataPedido : Date
+}
+
+class ItemPedido {
+  - id : Int
+  - quantidade : Int
+  - precoNoMomento : Decimal
+}
+
+class Pagamento {
+  - id : Int
+  - valor : Decimal
+  - metodo : MetodoPagamento
+  - status : StatusPagamento
+}
+
+
+Usuario "1" *--> "0..*" Endereco
+Usuario "1" --> "0..*" Pedido
+
+Gpu "0..*" --> "1" Modelo
+Modelo "0..*" --> "1" Fabricante
+Categoria "0..1" -- "0..*" Categoria
+Gpu "1" --> "0..*" Categoria
+Gpu "0..*" *--> "0..*" Tecnologias
+Gpu "1" *--> "1" ImagemGpu
+EstoqueEntrada "0..*" --> "1" Gpu
+
+Pedido "1" *--> "0..*" ItemPedido
+ItemPedido "0..*" --> "1" Gpu
+Pedido "1" *--> "1" Pagamento
+Pedido "1" --> "1" Endereco
+
+Usuario "1" --> "1" PapelUsuario
+Pedido "1" --> "1" StatusPedido
+Pagamento "1" --> "1" MetodoPagamento
+Pagamento "1" --> "1" StatusPagamento
+
+@enduml
