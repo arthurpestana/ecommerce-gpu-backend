@@ -49,10 +49,10 @@ VALUES
 ------------------------------------------------------------
 INSERT INTO images (url, alt_text, gpu_id)
 VALUES
-    ('https://cdn.gpus.com/images/rtx4090-front.jpg', 'RTX 4090 - frente', 1),
-    ('https://cdn.gpus.com/images/rtx4090-back.jpg', 'RTX 4090 - traseira', 1),
-    ('https://cdn.gpus.com/images/rx7900-front.jpg', 'RX 7900 XTX - frente', 2),
-    ('https://cdn.gpus.com/images/a770-front.jpg', 'Arc A770 - frente', 3);
+    ('https://m.media-amazon.com/images/I/71BdePK7bWL._AC_SX679_.jpg', 'RTX 4090 - frente', 1),
+    ('https://m.media-amazon.com/images/I/71BdePK7bWL._AC_SX679_.jpg', 'RTX 4090 - traseira', 1),
+    ('https://br.octoshop.com/cdn/shop/files/RX7900XTX-O24G-B_0.jpg?v=1739307638&width=1220', 'RX 7900 XTX - frente', 2),
+    ('https://cdn.awsli.com.br/2500x2500/2508/2508057/produto/197525754/1-42e15991ed.jpg', 'Arc A770 - frente', 3);
 
 ------------------------------------------------------------
 -- RELACIONAMENTOS GPU x TECNOLOGIA
