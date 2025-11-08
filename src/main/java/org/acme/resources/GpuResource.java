@@ -4,14 +4,26 @@ import java.math.BigDecimal;
 
 import org.acme.dtos.gpu.GpuRequestDTO;
 import org.acme.dtos.gpu.GpuResponseDTO;
+import org.acme.dtos.gpu.GpuStatusDTO;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.gpu.GpuService;
 
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/gpu")
 @Produces(MediaType.APPLICATION_JSON)
@@ -141,6 +153,12 @@ public class GpuResource {
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, @Valid GpuRequestDTO dto) {
         return Response.ok(gpuService.updateGpu(id, dto)).build();
+    }
+
+    @PATCH
+    @Path("/{id}/status")
+    public Response activate(@PathParam("id") Long id, @Valid GpuStatusDTO isActive) {
+        return Response.ok(gpuService.setActiveStatus(id, isActive)).build();
     }
 
     @DELETE

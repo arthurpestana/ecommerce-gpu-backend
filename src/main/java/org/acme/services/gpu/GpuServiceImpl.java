@@ -1,16 +1,27 @@
 package org.acme.services.gpu;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.acme.dtos.gpu.GpuRequestDTO;
 import org.acme.dtos.gpu.GpuResponseDTO;
+import org.acme.dtos.gpu.GpuStatusDTO;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.dtos.technology.TechnologyRequestDTO;
-import org.acme.models.*;
-import org.acme.repositories.*;
+import org.acme.models.Category;
+import org.acme.models.Gpu;
+import org.acme.models.Image;
+import org.acme.models.Model;
+import org.acme.models.Technology;
+import org.acme.repositories.CategoryRepository;
+import org.acme.repositories.GpuRepository;
+import org.acme.repositories.ModelRepository;
+import org.acme.repositories.TechnologyRepository;
 import org.acme.utils.StringUtils;
 import org.acme.utils.ValidationUtils;
 
@@ -181,6 +192,21 @@ public class GpuServiceImpl implements GpuService {
                 .orElseThrow(() -> new NotFoundException("Modelo não encontrado"));
 
         applyGpu(dto, gpu, model);
+        gpuRepository.persist(gpu);
+        return GpuResponseDTO.valueOf(gpu);
+    }
+
+    @Override
+    @Transactional
+    public GpuResponseDTO setActiveStatus(Long id, GpuStatusDTO dto) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID da GPU não pode ser nulo.");
+        }
+
+        Gpu gpu = gpuRepository.findByIdOptional(id)
+                .orElseThrow(() -> new NotFoundException("GPU não encontrada com o ID: " + id));
+
+        gpu.setIsActive(dto.isActive());
         gpuRepository.persist(gpu);
         return GpuResponseDTO.valueOf(gpu);
     }

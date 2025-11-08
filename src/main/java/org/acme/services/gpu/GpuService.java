@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.acme.dtos.gpu.GpuRequestDTO;
 import org.acme.dtos.gpu.GpuResponseDTO;
+import org.acme.dtos.gpu.GpuStatusDTO;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 
@@ -23,5 +24,6 @@ public interface GpuService {
 
     GpuResponseDTO createGpu(GpuRequestDTO dto);
     GpuResponseDTO updateGpu(Long id, GpuRequestDTO dto);
+    GpuResponseDTO setActiveStatus(Long id, GpuStatusDTO isActive);
     Integer deleteGpu(Long id);
 }

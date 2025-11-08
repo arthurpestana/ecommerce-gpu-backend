@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.validation.constraints.*;
 import org.acme.dtos.image.ImageRequestDTO;
 import org.acme.dtos.technology.TechnologyRequestDTO;
+
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record GpuRequestDTO(
 
@@ -36,6 +41,8 @@ public record GpuRequestDTO(
     @NotBlank(message = "A arquitetura é obrigatória")
     String architecture,
 
+    @NotNull(message = "O consumo de energia é obrigatório")
+    @Min(value = 1, message = "O consumo de energia deve ser positivo")
     Integer energyConsumption,
 
     @NotNull(message = "O modelo é obrigatório")
