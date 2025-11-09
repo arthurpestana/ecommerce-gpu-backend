@@ -1,6 +1,9 @@
 package org.acme.dtos.manufacturer;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public record ManufacturerRequestDTO(
 
@@ -15,7 +18,7 @@ public record ManufacturerRequestDTO(
 
     @NotBlank(message = "O CNPJ é obrigatório")
     @Pattern(regexp = "\\d{14}", message = "O CNPJ deve conter exatamente 14 dígitos numéricos")
-    String cpnj,
+    String cnpj,
 
     @NotBlank(message = "O país é obrigatório")
     @Size(max = 60, message = "O país pode ter no máximo 60 caracteres")

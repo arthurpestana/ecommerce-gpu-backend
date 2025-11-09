@@ -2,7 +2,6 @@ package org.acme.services.manufacturer;
 
 import java.util.List;
 import java.util.Optional;
-
 import java.util.stream.Collectors;
 
 import org.acme.dtos.manufacturer.ManufacturerRequestDTO;
@@ -70,14 +69,14 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     public ManufacturerResponseDTO createManufacturer(ManufacturerRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
 
-        if (manufacturerRepository.existsByCpnj(dto.cpnj())) {
+        if (manufacturerRepository.existsByCnpj(dto.cnpj())) {
             throw new IllegalArgumentException("CNPJ já está cadastrado.");
         }
 
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName(StringUtils.safeTrim(dto.name()));
         manufacturer.setEmail(StringUtils.safeTrim(dto.email()));
-        manufacturer.setCpnj(StringUtils.normalizeDigits(dto.cpnj()));
+        manufacturer.setCnpj(StringUtils.normalizeDigits(dto.cnpj()));
         manufacturer.setCountry(StringUtils.safeTrim(dto.country()));
 
         manufacturerRepository.persist(manufacturer);
@@ -100,7 +99,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
         updatedManufacturer.setName(StringUtils.safeTrim(dto.name()));
         updatedManufacturer.setEmail(StringUtils.safeTrim(dto.email()));
-        updatedManufacturer.setCpnj(StringUtils.normalizeDigits(dto.cpnj()));
+        updatedManufacturer.setCnpj(StringUtils.normalizeDigits(dto.cnpj()));
         updatedManufacturer.setCountry(StringUtils.safeTrim(dto.country()));
 
         manufacturerRepository.persist(updatedManufacturer);

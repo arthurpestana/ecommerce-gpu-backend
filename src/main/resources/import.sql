@@ -1,7 +1,7 @@
 ------------------------------------------------------------
 -- FABRICANTES
 ------------------------------------------------------------
-INSERT INTO manufacturers (id, name, email, cpnj, country)
+INSERT INTO manufacturers (id, name, email, cnpj, country)
 VALUES 
     (gen_random_uuid(), 'NVIDIA Corporation', 'contact@nvidia.com', '12.345.678/0001-99', 'USA'),
     (gen_random_uuid(), 'AMD Technologies', 'info@amd.com', '98.765.432/0001-88', 'USA'),

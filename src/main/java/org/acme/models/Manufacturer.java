@@ -1,15 +1,19 @@
 package org.acme.models;
 
-import java.util.*;
+import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "manufacturers")
 public class Manufacturer extends Person {
 
-    @Column(name = "cpnj", nullable = false, unique = true)
-    private String cpnj;
+    @Column(name = "cnpj", nullable = false, unique = true)
+    private String cnpj;
 
     @Column(name = "country", nullable = false)
     private String country;
@@ -17,12 +21,12 @@ public class Manufacturer extends Person {
     @OneToMany(mappedBy = "manufacturer", cascade=CascadeType.ALL)
     private List<Model> models;
 
-    public String getCpnj() {
-        return cpnj;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setCpnj(String cpnj) {
-        this.cpnj = cpnj;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public String getCountry() {

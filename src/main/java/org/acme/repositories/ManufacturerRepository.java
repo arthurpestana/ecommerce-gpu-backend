@@ -2,7 +2,6 @@ package org.acme.repositories;
 
 import java.util.Optional;
 
-
 import org.acme.models.Manufacturer;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
@@ -24,12 +23,12 @@ public class ManufacturerRepository implements PanacheRepositoryBase<Manufacture
         return find("LOWER(name) LIKE ?1", "%" + name.toLowerCase() + "%");
     }
 
-    public Optional<Manufacturer> findByCpnj(String cpnj) {
-        return find("cpnj", cpnj).firstResultOptional();
+    public Optional<Manufacturer> findByCnpj(String cnpj) {
+        return find("cnpj", cnpj).firstResultOptional();
     }
 
-    public boolean existsByCpnj(String cpnj) {
-        return find("cpnj", cpnj).firstResultOptional().isPresent();
+    public boolean existsByCnpj(String cnpj) {
+        return find("cnpj", cnpj).firstResultOptional().isPresent();
     }
 
     public Long countAll() {

@@ -8,7 +8,7 @@ public record ManufacturerResponseDTO(
     String id,
     String name,
     String email,
-    String cpnj,
+    String cnpj,
     String country
 ) {
     public static ManufacturerResponseDTO valueOf(Manufacturer manufacturer) {
@@ -18,7 +18,7 @@ public record ManufacturerResponseDTO(
             manufacturer.getId(),
             manufacturer.getName(),
             manufacturer.getEmail(),
-            manufacturer.getCpnj(),
+            manufacturer.getCnpj(),
             manufacturer.getCountry()
         );
     }
