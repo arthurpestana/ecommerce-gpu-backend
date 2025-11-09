@@ -7,9 +7,9 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public record PaginationRequestDTO(
 
-    @NotNull(message = "O offset é obrigatório")
-    @PositiveOrZero(message = "O offset deve ser maior ou igual a 0")
-    Integer offset,
+    @NotNull(message = "O page é obrigatório")
+    @PositiveOrZero(message = "O page deve ser maior ou igual a 0")
+    Integer page,
 
     @NotNull(message = "O limit é obrigatório")
     @Min(value = 1, message = "O limit deve ser no mínimo 1")

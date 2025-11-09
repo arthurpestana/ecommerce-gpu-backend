@@ -37,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public PaginationResponseDTO<CategoryResponseDTO> findCategoryByName(String name, PaginationRequestDTO pagination) {
-        List<Category> categories = categoryRepository.findByName(name).page(pagination.offset(), pagination.limit())
+        List<Category> categories = categoryRepository.findByName(name).page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = categoryRepository.findByName(name).count();
@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return new PaginationResponseDTO<>(
                 categoryList,
-                pagination.offset(),
+                pagination.page(),
                 pagination.limit(),
                 total
         );
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public PaginationResponseDTO<CategoryResponseDTO> findAllCategories(PaginationRequestDTO pagination) {
         List<Category> categories = categoryRepository.findAllCategories()
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = categoryRepository.findAllCategories().count();
@@ -68,7 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return new PaginationResponseDTO<>(
                 categoryList,
-                pagination.offset(),
+                pagination.page(),
                 pagination.limit(),
                 total
         );

@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PaginationResponseDTO<UserResponseDTO> findUserByName(String name, PaginationRequestDTO pagination) {
         List<User> users = userRepository.findByName(name)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = userRepository.findByName(name).count();
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
         return new PaginationResponseDTO<>(
                 userResponseList,
-                pagination.offset(),
+                pagination.page(),
                 pagination.limit(),
                 total
         );
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PaginationResponseDTO<UserResponseDTO> findAllUsers(PaginationRequestDTO pagination) {
         List<User> users = userRepository.findAllUsers()
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = userRepository.findAllUsers().count();
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
         return new PaginationResponseDTO<>(
                 userResponseList,
-                pagination.offset(),
+                pagination.page(),
                 pagination.limit(),
                 total
         );

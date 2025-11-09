@@ -26,13 +26,13 @@ public class InventoryTransactionResource {
 
     @GET
     public Response findAll(
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         PaginationResponseDTO<InventoryTransactionResponseDTO> list = transactionService.findAllTransactions(pagination);
         return Response.ok(list).build();
     }
@@ -41,13 +41,13 @@ public class InventoryTransactionResource {
     @Path("/gpu/{gpuId}")
     public Response findByGpu(
         @PathParam("gpuId") String gpuId,
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(transactionService.findByGpu(gpuId, pagination)).build();
     }
 
@@ -55,13 +55,13 @@ public class InventoryTransactionResource {
     @Path("/type/{type}")
     public Response findByType(
         @PathParam("type") String type,
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(transactionService.findByTransactionType(type, pagination)).build();
     }
 
@@ -70,16 +70,16 @@ public class InventoryTransactionResource {
     public Response findByDateRange(
         @QueryParam("start") String start,
         @QueryParam("end") String end,
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
         LocalDateTime startDate = start != null ? LocalDateTime.parse(start) : LocalDateTime.now().minusDays(30);
         LocalDateTime endDate = end != null ? LocalDateTime.parse(end) : LocalDateTime.now();
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(transactionService.findByDateRange(startDate, endDate, pagination)).build();
     }
 

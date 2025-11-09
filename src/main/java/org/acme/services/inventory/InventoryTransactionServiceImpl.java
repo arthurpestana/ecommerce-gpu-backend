@@ -38,7 +38,7 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
     @Override
     public PaginationResponseDTO<InventoryTransactionResponseDTO> findAllTransactions(PaginationRequestDTO pagination) {
         List<InventoryTransaction> transactions = transactionRepository.findAllTransactions()
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = transactionRepository.countAll();
@@ -47,13 +47,13 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
                 .map(InventoryTransactionResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<InventoryTransactionResponseDTO> findByGpu(String gpuId, PaginationRequestDTO pagination) {
         List<InventoryTransaction> transactions = transactionRepository.findByGpuId(gpuId)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = transactionRepository.findByGpuId(gpuId).count();
@@ -62,13 +62,13 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
                 .map(InventoryTransactionResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<InventoryTransactionResponseDTO> findByTransactionType(String type, PaginationRequestDTO pagination) {
         List<InventoryTransaction> transactions = transactionRepository.findByTransactionType(type)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = transactionRepository.findByTransactionType(type).count();
@@ -77,13 +77,13 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
                 .map(InventoryTransactionResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<InventoryTransactionResponseDTO> findByDateRange(LocalDateTime start, LocalDateTime end, PaginationRequestDTO pagination) {
         List<InventoryTransaction> transactions = transactionRepository.findByDateRange(start, end)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = transactionRepository.findByDateRange(start, end).count();
@@ -92,7 +92,7 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
                 .map(InventoryTransactionResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override

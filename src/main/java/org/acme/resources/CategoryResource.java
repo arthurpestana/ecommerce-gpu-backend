@@ -25,17 +25,17 @@ public class CategoryResource {
 
     @GET
     public Response findAll(
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit  = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         PaginationResponseDTO<CategoryResponseDTO> categoriesList = categoryService.findAllCategories(pagination);
 
         return Response.ok(categoriesList)
-                .header("X-Offset", offset)
+                .header("X-Page", page)
                 .header("X-Limit", limit)
                 .header("X-Total-Count", categoriesList.total())
                 .build();
@@ -45,17 +45,17 @@ public class CategoryResource {
     @Path("/name/{name}")
     public Response findByName(
         @PathParam("name") String name,
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit  = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         PaginationResponseDTO<CategoryResponseDTO> categoriesList = categoryService.findCategoryByName(name, pagination);
 
         return Response.ok(categoriesList)
-                .header("X-Offset", offset)
+                .header("X-Page", page)
                 .header("X-Limit", limit)
                 .header("X-Total-Count", categoriesList.total())
                 .build();

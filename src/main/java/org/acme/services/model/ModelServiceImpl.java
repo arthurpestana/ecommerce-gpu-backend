@@ -43,7 +43,7 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public PaginationResponseDTO<ModelResponseDTO> findModelByName(String name, PaginationRequestDTO pagination) {
         List<Model> models = modelRepository.findByName(name)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = modelRepository.findByName(name).count();
@@ -52,13 +52,13 @@ public class ModelServiceImpl implements ModelService {
                 .map(ModelResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<ModelResponseDTO> findModelByManufacturer(String manufacturerId, PaginationRequestDTO pagination) {
         List<Model> models = modelRepository.findByManufacturerId(manufacturerId)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = modelRepository.findByManufacturerId(manufacturerId).count();
@@ -67,13 +67,13 @@ public class ModelServiceImpl implements ModelService {
                 .map(ModelResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<ModelResponseDTO> findAllModels(PaginationRequestDTO pagination) {
         List<Model> models = modelRepository.findAllModels()
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = modelRepository.countAll();
@@ -82,7 +82,7 @@ public class ModelServiceImpl implements ModelService {
                 .map(ModelResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override

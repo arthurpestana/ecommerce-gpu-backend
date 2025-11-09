@@ -43,7 +43,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public PaginationResponseDTO<AddressResponseDTO> findAddressByCity(String city, PaginationRequestDTO pagination) {
         List<Address> addresses = addressRepository.findByCity(city)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = addressRepository.findByCity(city).count();
@@ -52,13 +52,13 @@ public class AddressServiceImpl implements AddressService {
                 .map(AddressResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(addressList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(addressList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<AddressResponseDTO> findAddressByUser(String userId, PaginationRequestDTO pagination) {
         List<Address> addresses = addressRepository.findByUserId(userId)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = addressRepository.findByUserId(userId).count();
@@ -67,13 +67,13 @@ public class AddressServiceImpl implements AddressService {
                 .map(AddressResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(addressList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(addressList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<AddressResponseDTO> findAllAddresses(PaginationRequestDTO pagination) {
         List<Address> addresses = addressRepository.findAllAddresses()
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = addressRepository.countAll();
@@ -82,7 +82,7 @@ public class AddressServiceImpl implements AddressService {
                 .map(AddressResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(addressList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(addressList, pagination.page(), pagination.limit(), total);
     }
 
     @Override

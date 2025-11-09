@@ -60,44 +60,44 @@ public class GpuServiceImpl implements GpuService {
 
     @Override
     public PaginationResponseDTO<GpuResponseDTO> findGpuByName(String name, PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findByName(name).page(pagination.offset(), pagination.limit()).list();
+        List<Gpu> gpus = gpuRepository.findByName(name).page(pagination.page(), pagination.limit()).list();
         Long total = gpuRepository.findByName(name).count();
 
         List<GpuResponseDTO> gpuList = gpus.stream()
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<GpuResponseDTO> findAllGpus(PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findAllGpus().page(pagination.offset(), pagination.limit()).list();
+        List<Gpu> gpus = gpuRepository.findAllGpus().page(pagination.page(), pagination.limit()).list();
         Long total = gpuRepository.findAllGpus().count();
 
         List<GpuResponseDTO> gpuList = gpus.stream()
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<GpuResponseDTO> findByModel(String modelId, PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findByModel(modelId).page(pagination.offset(), pagination.limit()).list();
+        List<Gpu> gpus = gpuRepository.findByModel(modelId).page(pagination.page(), pagination.limit()).list();
         Long total = gpuRepository.findByModel(modelId).count();
 
         List<GpuResponseDTO> gpuList = gpus.stream()
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<GpuResponseDTO> findByManufacturer(String manufacturerId,
             PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findByManufacturer(manufacturerId).page(pagination.offset(), pagination.limit())
+        List<Gpu> gpus = gpuRepository.findByManufacturer(manufacturerId).page(pagination.page(), pagination.limit())
                 .list();
         Long total = gpuRepository.findByManufacturer(manufacturerId).count();
 
@@ -105,7 +105,7 @@ public class GpuServiceImpl implements GpuService {
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class GpuServiceImpl implements GpuService {
             BigDecimal min,
             BigDecimal max,
             PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findByPriceRange(min, max).page(pagination.offset(), pagination.limit()).list();
+        List<Gpu> gpus = gpuRepository.findByPriceRange(min, max).page(pagination.page(), pagination.limit()).list();
 
         Long total = gpuRepository.findByPriceRange(min, max).count();
 
@@ -121,12 +121,12 @@ public class GpuServiceImpl implements GpuService {
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<GpuResponseDTO> findByTechnology(String techName, PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findByTechnologyName(techName).page(pagination.offset(), pagination.limit())
+        List<Gpu> gpus = gpuRepository.findByTechnologyName(techName).page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = gpuRepository.findByTechnologyName(techName).count();
@@ -135,12 +135,12 @@ public class GpuServiceImpl implements GpuService {
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<GpuResponseDTO> findByCategory(String categoryName, PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findByCategoryName(categoryName).page(pagination.offset(), pagination.limit())
+        List<Gpu> gpus = gpuRepository.findByCategoryName(categoryName).page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = gpuRepository.findByCategoryName(categoryName).count();
@@ -149,7 +149,7 @@ public class GpuServiceImpl implements GpuService {
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class GpuServiceImpl implements GpuService {
             PaginationRequestDTO pagination) {
 
         List<Gpu> gpus = gpuRepository.findFiltered(name, modelId, manufacturerId, minPrice, maxPrice, isActive)
-                .page(pagination.offset(), pagination.limit()).list();
+                .page(pagination.page(), pagination.limit()).list();
 
         Long total = gpuRepository.findFiltered(name, modelId, manufacturerId, minPrice, maxPrice, isActive).count();
 
@@ -171,7 +171,7 @@ public class GpuServiceImpl implements GpuService {
                 .map(GpuResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(gpuList, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
     }
 
     @Override

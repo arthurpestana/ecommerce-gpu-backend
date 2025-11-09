@@ -37,7 +37,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     @Override
     public PaginationResponseDTO<ManufacturerResponseDTO> findManufacturerByName(String name, PaginationRequestDTO pagination) {
         List<Manufacturer> manufacturers = manufacturerRepository.findByName(name)
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = manufacturerRepository.findByName(name).count();
@@ -46,13 +46,13 @@ public class ManufacturerServiceImpl implements ManufacturerService {
                 .map(ManufacturerResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override
     public PaginationResponseDTO<ManufacturerResponseDTO> findAllManufacturers(PaginationRequestDTO pagination) {
         List<Manufacturer> manufacturers = manufacturerRepository.findAllManufacturers()
-                .page(pagination.offset(), pagination.limit())
+                .page(pagination.page(), pagination.limit())
                 .list();
 
         Long total = manufacturerRepository.countAll();
@@ -61,7 +61,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
                 .map(ManufacturerResponseDTO::valueOf)
                 .collect(Collectors.toList());
 
-        return new PaginationResponseDTO<>(list, pagination.offset(), pagination.limit(), total);
+        return new PaginationResponseDTO<>(list, pagination.page(), pagination.limit(), total);
     }
 
     @Override

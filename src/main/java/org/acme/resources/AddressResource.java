@@ -25,17 +25,17 @@ public class AddressResource {
 
     @GET
     public Response findAll(
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         PaginationResponseDTO<AddressResponseDTO> addresses = addressService.findAllAddresses(pagination);
 
         return Response.ok(addresses)
-                .header("X-Offset", offset)
+                .header("X-Page", page)
                 .header("X-Limit", limit)
                 .header("X-Total-Count", addresses.total())
                 .build();
@@ -45,13 +45,13 @@ public class AddressResource {
     @Path("/city/{city}")
     public Response findByCity(
         @PathParam("city") String city,
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         PaginationResponseDTO<AddressResponseDTO> addresses = addressService.findAddressByCity(city, pagination);
         return Response.ok(addresses).build();
     }
@@ -60,13 +60,13 @@ public class AddressResource {
     @Path("/user/{userId}")
     public Response findByUser(
         @PathParam("userId") String userId,
-        @QueryParam("offset") @DefaultValue("0") int offset,
+        @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         PaginationResponseDTO<AddressResponseDTO> addresses = addressService.findAddressByUser(userId, pagination);
         return Response.ok(addresses).build();
     }

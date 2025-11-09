@@ -50,12 +50,12 @@ public class GpuResource {
 
     @GET
     public Response findAll(
-            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         PaginationResponseDTO<GpuResponseDTO> gpus = gpuService.findAllGpus(pagination);
         return Response.ok(gpus).build();
     }
@@ -69,13 +69,13 @@ public class GpuResource {
             @QueryParam("minPrice") BigDecimal minPrice,
             @QueryParam("maxPrice") BigDecimal maxPrice,
             @QueryParam("isActive") Boolean isActive,
-            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
 
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         var gpus = gpuService.findFiltered(name, modelId, manufacturerId, minPrice, maxPrice, isActive, pagination);
         return Response.ok(gpus).build();
     }
@@ -84,12 +84,12 @@ public class GpuResource {
     @Path("/model/{modelId}")
     public Response findByModel(
             @PathParam("modelId") String modelId,
-            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(gpuService.findByModel(modelId, pagination)).build();
     }
 
@@ -97,12 +97,12 @@ public class GpuResource {
     @Path("/manufacturer/{manufacturerId}")
     public Response findByManufacturer(
             @PathParam("manufacturerId") String manufacturerId,
-            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(gpuService.findByManufacturer(manufacturerId, pagination)).build();
     }
 
@@ -111,21 +111,21 @@ public class GpuResource {
     public Response findByPriceRange(
             @QueryParam("min") BigDecimal min,
             @QueryParam("max") BigDecimal max,
-            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(gpuService.findByPriceRange(min, max, pagination)).build();
     }
 
     @GET
     @Path("/technology/{tech}")
     public Response findByTechnology(@PathParam("tech") String tech,
-            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(gpuService.findByTechnology(tech, pagination)).build();
     }
 
@@ -133,12 +133,12 @@ public class GpuResource {
     @Path("/category/{category}")
     public Response findByCategory(
             @PathParam("category") String category,
-            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
-        offset = Math.max(0, offset);
+        page = Math.max(0, page);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
-        PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
+        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(gpuService.findByCategory(category, pagination)).build();
     }
 
