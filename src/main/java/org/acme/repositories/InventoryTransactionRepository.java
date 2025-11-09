@@ -2,7 +2,7 @@ package org.acme.repositories;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
 
 import org.acme.models.InventoryTransaction;
 
@@ -11,13 +11,13 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class InventoryTransactionRepository implements PanacheRepositoryBase<InventoryTransaction, UUID> {
+public class InventoryTransactionRepository implements PanacheRepositoryBase<InventoryTransaction, String> {
 
     public PanacheQuery<InventoryTransaction> findAllTransactions() {
         return findAll();
     }
 
-    public PanacheQuery<InventoryTransaction> findByGpuId(UUID gpuId) {
+    public PanacheQuery<InventoryTransaction> findByGpuId(String gpuId) {
         return find("gpu.id", gpuId);
     }
 

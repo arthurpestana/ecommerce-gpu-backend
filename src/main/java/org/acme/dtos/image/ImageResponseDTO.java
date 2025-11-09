@@ -1,11 +1,11 @@
 package org.acme.dtos.image;
 
-import java.util.UUID;
+
 
 import org.acme.models.Image;
 
 public record ImageResponseDTO(
-    UUID id,
+    String id,
     String url,
     String altText
 ) {

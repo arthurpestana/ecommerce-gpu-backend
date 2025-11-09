@@ -1,6 +1,6 @@
 package org.acme.dtos.model;
 
-import java.util.UUID;
+
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -20,5 +20,5 @@ public record ModelRequestDTO(
     Integer releaseYear,
 
     @NotNull(message = "O ID do fabricante é obrigatório")
-    UUID manufacturerId
+    String manufacturerId
 ) {}

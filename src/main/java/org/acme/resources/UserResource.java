@@ -5,7 +5,7 @@ import org.acme.dtos.user.UserResponseDTO;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.user.UserService;
-import java.util.UUID;
+
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -75,7 +75,7 @@ public class UserResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") UUID id) {
+    public Response findById(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST)
                     .entity("ID inválido fornecido.")
@@ -99,7 +99,7 @@ public class UserResource {
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") UUID id, @Valid UserRequestDTO dto) {
+    public Response update(@PathParam("id") String id, @Valid UserRequestDTO dto) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST)
                     .entity("ID inválido fornecido.")
@@ -112,7 +112,7 @@ public class UserResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") UUID id) {
+    public Response delete(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST)
                     .entity("ID inválido fornecido.")

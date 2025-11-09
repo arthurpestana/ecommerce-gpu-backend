@@ -1,14 +1,14 @@
 package org.acme.dtos.inventory;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 import org.acme.dtos.gpu.GpuResponseDTO;
 import org.acme.models.InventoryTransaction;
 import org.acme.models.enums.TransactionTypes;
 
 public record InventoryTransactionResponseDTO(
-    UUID id,
+    String id,
     GpuResponseDTO gpu,
     Integer quantity,
     LocalDateTime transactionDate,

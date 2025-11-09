@@ -1,7 +1,7 @@
 package org.acme.repositories;
 
 import java.util.Optional;
-import java.util.UUID;
+
 
 import org.acme.models.Category;
 
@@ -10,12 +10,12 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class CategoryRepository implements PanacheRepositoryBase<Category, UUID> {
+public class CategoryRepository implements PanacheRepositoryBase<Category, String> {
     public PanacheQuery<Category> findAllCategories() {
         return findAll();
     }
 
-    public Optional<Category> findCategoryById(UUID id) {
+    public Optional<Category> findCategoryById(String id) {
         return findByIdOptional(id);
     }
 

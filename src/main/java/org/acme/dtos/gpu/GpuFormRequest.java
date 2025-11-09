@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.MediaType;
 public record GpuFormRequest(
 
         @RestForm("data")
+        @Valid
         @PartType(MediaType.APPLICATION_JSON)
         GpuRequestDTO data,
 

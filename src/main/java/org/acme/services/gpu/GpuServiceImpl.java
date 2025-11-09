@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.UUID;
+
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import org.acme.dtos.gpu.GpuRequestDTO;
@@ -54,7 +54,7 @@ public class GpuServiceImpl implements GpuService {
     ImageService imageService;
 
     @Override
-    public Optional<GpuResponseDTO> findGpuById(UUID id) {
+    public Optional<GpuResponseDTO> findGpuById(String id) {
         return gpuRepository.findGpuById(id).map(GpuResponseDTO::valueOf);
     }
 
@@ -83,7 +83,7 @@ public class GpuServiceImpl implements GpuService {
     }
 
     @Override
-    public PaginationResponseDTO<GpuResponseDTO> findByModel(UUID modelId, PaginationRequestDTO pagination) {
+    public PaginationResponseDTO<GpuResponseDTO> findByModel(String modelId, PaginationRequestDTO pagination) {
         List<Gpu> gpus = gpuRepository.findByModel(modelId).page(pagination.offset(), pagination.limit()).list();
         Long total = gpuRepository.findByModel(modelId).count();
 
@@ -95,7 +95,7 @@ public class GpuServiceImpl implements GpuService {
     }
 
     @Override
-    public PaginationResponseDTO<GpuResponseDTO> findByManufacturer(UUID manufacturerId,
+    public PaginationResponseDTO<GpuResponseDTO> findByManufacturer(String manufacturerId,
             PaginationRequestDTO pagination) {
         List<Gpu> gpus = gpuRepository.findByManufacturer(manufacturerId).page(pagination.offset(), pagination.limit())
                 .list();
@@ -155,8 +155,8 @@ public class GpuServiceImpl implements GpuService {
     @Override
     public PaginationResponseDTO<GpuResponseDTO> findFiltered(
             String name,
-            UUID modelId,
-            UUID manufacturerId,
+            String modelId,
+            String manufacturerId,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Boolean isActive,
@@ -192,7 +192,7 @@ public class GpuServiceImpl implements GpuService {
 
     @Override
     @Transactional
-    public GpuResponseDTO updateGpu(UUID id, GpuRequestDTO dto, List<FileUpload> imagesUpload) {
+    public GpuResponseDTO updateGpu(String id, GpuRequestDTO dto, List<FileUpload> imagesUpload) {
         if (id == null) {
             throw new IllegalArgumentException("ID do Fabricante não pode ser nulo.");
         }
@@ -214,7 +214,7 @@ public class GpuServiceImpl implements GpuService {
 
     @Override
     @Transactional
-    public GpuResponseDTO setActiveStatus(UUID id, GpuStatusRequestDTO dto) {
+    public GpuResponseDTO setActiveStatus(String id, GpuStatusRequestDTO dto) {
         if (id == null) {
             throw new IllegalArgumentException("ID da GPU não pode ser nulo.");
         }
@@ -229,7 +229,7 @@ public class GpuServiceImpl implements GpuService {
 
     @Override
     @Transactional
-    public Integer deleteGpu(UUID id) {
+    public Integer deleteGpu(String id) {
         if (id == null) {
             throw new IllegalArgumentException("ID da GPU não pode ser nulo.");
         }

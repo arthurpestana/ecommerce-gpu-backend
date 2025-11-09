@@ -1,12 +1,12 @@
 package org.acme.dtos.model;
 
-import java.util.UUID;
+
 
 import org.acme.dtos.manufacturer.ManufacturerResponseDTO;
 import org.acme.models.Model;
 
 public record ModelResponseDTO(
-    UUID id,
+    String id,
     String name,
     Integer releaseYear,
     ManufacturerResponseDTO manufacturer

@@ -39,7 +39,7 @@ VALUES
     ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'XeSS', 'Escalonamento baseado em IA da Intel.');
 
 ------------------------------------------------------------
--- GPUS (UUID)
+-- GPUS (String)
 ------------------------------------------------------------
 INSERT INTO gpus (id, name, description, price, is_active, available_quantity,
                   memory, architecture, energy_consumption, model_id)

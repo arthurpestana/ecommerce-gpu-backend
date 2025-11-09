@@ -11,7 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.core.Response.Status;
-import java.util.UUID;
+
 
 @Path("/address")
 @Produces(MediaType.APPLICATION_JSON)
@@ -59,7 +59,7 @@ public class AddressResource {
     @GET
     @Path("/user/{userId}")
     public Response findByUser(
-        @PathParam("userId") UUID userId,
+        @PathParam("userId") String userId,
         @QueryParam("offset") @DefaultValue("0") int offset,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
@@ -73,7 +73,7 @@ public class AddressResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") UUID id) {
+    public Response findById(@PathParam("id") String id) {
         return addressService.findAddressById(id)
                 .map(Response::ok)
                 .orElse(Response.status(Status.NOT_FOUND))
@@ -88,14 +88,14 @@ public class AddressResource {
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") UUID id, @Valid AddressRequestDTO dto) {
+    public Response update(@PathParam("id") String id, @Valid AddressRequestDTO dto) {
         AddressResponseDTO updated = addressService.updateAddress(id, dto);
         return Response.ok(updated).build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") UUID id) {
+    public Response delete(@PathParam("id") String id) {
         Integer deleted = addressService.deleteAddress(id);
         return (deleted == 1)
                 ? Response.noContent().build()

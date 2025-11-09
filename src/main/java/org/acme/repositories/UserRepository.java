@@ -1,7 +1,7 @@
 package org.acme.repositories;
 
 import java.util.Optional;
-import java.util.UUID;
+
 
 import org.acme.models.User;
 
@@ -10,13 +10,13 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class UserRepository implements PanacheRepositoryBase<User, UUID> {
+public class UserRepository implements PanacheRepositoryBase<User, String> {
 
     public PanacheQuery<User> findAllUsers() {
         return findAll();
     }
 
-    public Optional<User> findUserById(UUID id) {
+    public Optional<User> findUserById(String id) {
         return findByIdOptional(id);
     }
 

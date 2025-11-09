@@ -1,26 +1,23 @@
 package org.acme.services.image;
 
-import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.jboss.resteasy.reactive.multipart.*;
-
 import org.acme.dtos.image.ImageResponseDTO;
-import org.acme.dtos.image.ImageUploadDTO;
 import org.acme.models.Gpu;
 import org.acme.models.Image;
 import org.acme.repositories.GpuRepository;
 import org.acme.repositories.ImageRepository;
 import org.acme.services.storage.StorageService;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
-import java.nio.file.Path;
 
 @ApplicationScoped
 public class ImageServiceImpl implements ImageService {
@@ -45,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    private String buildObjectName(UUID gpuId, String originalName) {
+    private String buildObjectName(String gpuId, String originalName) {
         String ext = "";
 
         int dotIdx = originalName.lastIndexOf('.');
@@ -61,7 +58,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public ImageResponseDTO uploadForGpu(UUID gpuId, FileUpload uploadFile, String altText) {
+    public ImageResponseDTO uploadForGpu(String gpuId, FileUpload uploadFile, String altText) {
         Gpu gpu = gpuRepository.findByIdOptional(gpuId)
                 .orElseThrow(() -> new NotFoundException("GPU não encontrada: " + gpuId));
 
@@ -94,7 +91,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public List<ImageResponseDTO> uploadMultipleForGpu(UUID gpuId, List<FileUpload> uploadFiles) {
+    public List<ImageResponseDTO> uploadMultipleForGpu(String gpuId, List<FileUpload> uploadFiles) {
         if (uploadFiles == null || uploadFiles.isEmpty()) {
             return List.of();
         }
@@ -105,7 +102,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ImageResponseDTO findById(UUID id) {
+    public ImageResponseDTO findById(String id) {
         Image img = imageRepository.findImageById(id)
                 .orElseThrow(() -> new NotFoundException("Imagem não encontrada: " + id));
 
@@ -113,7 +110,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<ImageResponseDTO> findByGpu(UUID gpuId) {
+    public List<ImageResponseDTO> findByGpu(String gpuId) {
         return imageRepository.findByGpu(gpuId).list()
                 .stream()
                 .map(ImageResponseDTO::valueOf)
@@ -130,7 +127,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void delete(UUID id) {
+    public void delete(String id) {
         Image img = imageRepository.findImageById(id)
                 .orElseThrow(() -> new NotFoundException("Imagem não encontrada: " + id));
 
@@ -145,7 +142,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void deleteManyFromGpu(UUID gpuId, List<UUID> imageIds) {
+    public void deleteManyFromGpu(String gpuId, List<String> imageIds) {
 
         if (imageIds == null || imageIds.isEmpty()) {
             return;
@@ -170,7 +167,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void deleteByGpu(UUID gpuId) {
+    public void deleteByGpu(String gpuId) {
         List<Image> imgs = imageRepository.findByGpu(gpuId).list();
 
         for (Image img : imgs) {

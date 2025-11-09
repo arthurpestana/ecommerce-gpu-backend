@@ -3,7 +3,7 @@ package org.acme.dtos.gpu;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+
 
 import org.acme.dtos.image.ImageRequestDTO;
 import org.acme.dtos.technology.TechnologyRequestDTO;
@@ -48,9 +48,9 @@ public record GpuRequestDTO(
 
     @NotNull(message = "O modelo é obrigatório")
     @NotBlank(message = "O ID do modelo é obrigatório")
-    UUID modelId,
+    String modelId,
     
     Set<TechnologyRequestDTO> technologies,
 
-    Set<UUID> categoryIds
+    Set<String> categoryIds
 ) {}

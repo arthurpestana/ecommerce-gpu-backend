@@ -3,7 +3,7 @@ package org.acme.services.model;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.UUID;
+
 
 import org.acme.dtos.model.ModelRequestDTO;
 import org.acme.dtos.model.ModelResponseDTO;
@@ -35,7 +35,7 @@ public class ModelServiceImpl implements ModelService {
     Validator validator;
 
     @Override
-    public Optional<ModelResponseDTO> findModelById(UUID id) {
+    public Optional<ModelResponseDTO> findModelById(String id) {
         return modelRepository.findModelById(id)
                 .map(ModelResponseDTO::valueOf);
     }
@@ -56,7 +56,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public PaginationResponseDTO<ModelResponseDTO> findModelByManufacturer(UUID manufacturerId, PaginationRequestDTO pagination) {
+    public PaginationResponseDTO<ModelResponseDTO> findModelByManufacturer(String manufacturerId, PaginationRequestDTO pagination) {
         List<Model> models = modelRepository.findByManufacturerId(manufacturerId)
                 .page(pagination.offset(), pagination.limit())
                 .list();
@@ -108,7 +108,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @Transactional
-    public ModelResponseDTO updateModel(UUID id, ModelRequestDTO dto) {
+    public ModelResponseDTO updateModel(String id, ModelRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
         if (id == null) {
             throw new IllegalArgumentException("ID do Modelo não pode ser nulo.");
@@ -131,7 +131,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @Transactional
-    public Integer deleteModel(UUID id) {
+    public Integer deleteModel(String id) {
         if (id == null) {
             throw new IllegalArgumentException("ID do Modelo não pode ser nulo.");
         }

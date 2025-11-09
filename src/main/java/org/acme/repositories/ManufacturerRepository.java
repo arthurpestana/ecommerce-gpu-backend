@@ -1,7 +1,7 @@
 package org.acme.repositories;
 
 import java.util.Optional;
-import java.util.UUID;
+
 
 import org.acme.models.Manufacturer;
 
@@ -10,13 +10,13 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class ManufacturerRepository implements PanacheRepositoryBase<Manufacturer, UUID> {
+public class ManufacturerRepository implements PanacheRepositoryBase<Manufacturer, String> {
 
     public PanacheQuery<Manufacturer> findAllManufacturers() {
         return findAll();
     }
 
-    public Optional<Manufacturer> findManufacturerById(UUID id) {
+    public Optional<Manufacturer> findManufacturerById(String id) {
         return findByIdOptional(id);
     }
 

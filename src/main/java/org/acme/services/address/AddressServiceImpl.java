@@ -3,7 +3,7 @@ package org.acme.services.address;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.UUID;
+
 
 import org.acme.dtos.address.AddressRequestDTO;
 import org.acme.dtos.address.AddressResponseDTO;
@@ -35,7 +35,7 @@ public class AddressServiceImpl implements AddressService {
     Validator validator;
 
     @Override
-    public Optional<AddressResponseDTO> findAddressById(UUID id) {
+    public Optional<AddressResponseDTO> findAddressById(String id) {
         return addressRepository.findAddressById(id)
                 .map(AddressResponseDTO::valueOf);
     }
@@ -56,7 +56,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public PaginationResponseDTO<AddressResponseDTO> findAddressByUser(UUID userId, PaginationRequestDTO pagination) {
+    public PaginationResponseDTO<AddressResponseDTO> findAddressByUser(String userId, PaginationRequestDTO pagination) {
         List<Address> addresses = addressRepository.findByUserId(userId)
                 .page(pagination.offset(), pagination.limit())
                 .list();
@@ -107,7 +107,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    public AddressResponseDTO updateAddress(UUID id, AddressRequestDTO dto) {
+    public AddressResponseDTO updateAddress(String id, AddressRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
         if (id == null) {
             throw new IllegalArgumentException("ID do Endereço não pode ser nulo.");
@@ -133,7 +133,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    public Integer deleteAddress(UUID id) {
+    public Integer deleteAddress(String id) {
         if (id == null) {
             throw new IllegalArgumentException("ID do Endereço não pode ser nulo.");
         }

@@ -1,7 +1,7 @@
 package org.acme.repositories;
 
 import java.util.Optional;
-import java.util.UUID;
+
 
 import org.acme.models.Address;
 
@@ -10,13 +10,13 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class AddressRepository implements PanacheRepositoryBase<Address, UUID> {
+public class AddressRepository implements PanacheRepositoryBase<Address, String> {
 
     public PanacheQuery<Address> findAllAddresses() {
         return findAll();
     }
 
-    public Optional<Address> findAddressById(UUID id) {
+    public Optional<Address> findAddressById(String id) {
         return findByIdOptional(id);
     }
 
@@ -24,7 +24,7 @@ public class AddressRepository implements PanacheRepositoryBase<Address, UUID> {
         return find("LOWER(city) LIKE ?1", "%" + city.toLowerCase() + "%");
     }
 
-    public PanacheQuery<Address> findByUserId(UUID userId) {
+    public PanacheQuery<Address> findByUserId(String userId) {
         return find("user.id", userId);
     }
 

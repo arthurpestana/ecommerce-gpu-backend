@@ -1,6 +1,6 @@
 package org.acme.dtos.address;
 
-import java.util.UUID;
+
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,5 +30,5 @@ public record AddressRequestDTO(
     String country,
 
     @NotNull(message = "O ID do usuário é obrigatório")
-    UUID userId
+    String userId
 ) {}

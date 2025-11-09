@@ -1,11 +1,11 @@
 package org.acme.dtos.technology;
 
-import java.util.UUID;
+
 
 import org.acme.models.Technology;
 
 public record TechnologyResponseDTO(
-    UUID id,
+    String id,
     String name,
     String description
 ) {

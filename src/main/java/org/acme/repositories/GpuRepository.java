@@ -2,7 +2,7 @@ package org.acme.repositories;
 
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import org.acme.models.Gpu;
 
@@ -11,13 +11,13 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class GpuRepository implements PanacheRepositoryBase<Gpu, UUID> {
+public class GpuRepository implements PanacheRepositoryBase<Gpu, String> {
 
     public PanacheQuery<Gpu> findAllGpus() {
         return findAll();
     }
 
-    public Optional<Gpu> findGpuById(UUID id) {
+    public Optional<Gpu> findGpuById(String id) {
         return findByIdOptional(id);
     }
 
@@ -33,11 +33,11 @@ public class GpuRepository implements PanacheRepositoryBase<Gpu, UUID> {
         return count();
     }
 
-    public PanacheQuery<Gpu> findByModel(UUID modelId) {
+    public PanacheQuery<Gpu> findByModel(String modelId) {
         return find("model.id = ?1", modelId);
     }
 
-    public PanacheQuery<Gpu> findByManufacturer(UUID manufacturerId) {
+    public PanacheQuery<Gpu> findByManufacturer(String manufacturerId) {
         return find("model.manufacturer.id = ?1", manufacturerId);
     }
 
@@ -73,8 +73,8 @@ public class GpuRepository implements PanacheRepositoryBase<Gpu, UUID> {
 
     public PanacheQuery<Gpu> findFiltered(
         String name,
-        UUID modelId,
-        UUID manufacturerId,
+        String modelId,
+        String manufacturerId,
         BigDecimal minPrice,
         BigDecimal maxPrice,
         Boolean isActive

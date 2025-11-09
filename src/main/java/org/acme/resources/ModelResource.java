@@ -5,7 +5,7 @@ import org.acme.dtos.model.ModelResponseDTO;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.model.ModelService;
-import java.util.UUID;
+
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -63,7 +63,7 @@ public class ModelResource {
     @GET
     @Path("/manufacturer/{manufacturerId}")
     public Response findByManufacturer(
-        @PathParam("manufacturerId") UUID manufacturerId,
+        @PathParam("manufacturerId") String manufacturerId,
         @QueryParam("offset") @DefaultValue("0") int offset,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
@@ -82,7 +82,7 @@ public class ModelResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") UUID id) {
+    public Response findById(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
         }
@@ -101,7 +101,7 @@ public class ModelResource {
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") UUID id, @Valid ModelRequestDTO dto) {
+    public Response update(@PathParam("id") String id, @Valid ModelRequestDTO dto) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
         }
@@ -112,7 +112,7 @@ public class ModelResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") UUID id) {
+    public Response delete(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
         }

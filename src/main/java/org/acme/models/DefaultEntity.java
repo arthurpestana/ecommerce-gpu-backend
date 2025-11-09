@@ -1,7 +1,7 @@
 package org.acme.models;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +15,7 @@ public class DefaultEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     private LocalDateTime createdAt;
 
@@ -31,11 +31,11 @@ public class DefaultEntity {
         setUpdatedAt(LocalDateTime.now());
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

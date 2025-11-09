@@ -11,7 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.core.Response.Status;
-import java.util.UUID;
+
 
 @Path("/category")
 @Produces(MediaType.APPLICATION_JSON)
@@ -64,7 +64,7 @@ public class CategoryResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") UUID id) {
+    public Response findById(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
         }
@@ -86,7 +86,7 @@ public class CategoryResource {
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") UUID id, @Valid CategoryRequestDTO dto) {
+    public Response update(@PathParam("id") String id, @Valid CategoryRequestDTO dto) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
         }
@@ -97,7 +97,7 @@ public class CategoryResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") UUID id) {
+    public Response delete(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
         }

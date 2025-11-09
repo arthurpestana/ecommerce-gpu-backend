@@ -1,11 +1,11 @@
 package org.acme.dtos.category;
 
-import java.util.UUID;
+
 
 import org.acme.models.Category;
 
 public record CategoryResponseDTO(
-    UUID id,
+    String id,
     String name,
     String description
 ) {

@@ -12,7 +12,7 @@ import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.gpu.GpuService;
 
 import org.jboss.resteasy.reactive.multipart.FileUpload;
-import java.util.UUID;
+
 
 import org.acme.dtos.image.ImageDeleteManyRequestDTO;
 import org.acme.dtos.image.ImageUploadDTO;
@@ -64,8 +64,8 @@ public class GpuResource {
     @Path("/filter")
     public Response filter(
             @QueryParam("name") String name,
-            @QueryParam("modelId") UUID modelId,
-            @QueryParam("manufacturerId") UUID manufacturerId,
+            @QueryParam("modelId") String modelId,
+            @QueryParam("manufacturerId") String manufacturerId,
             @QueryParam("minPrice") BigDecimal minPrice,
             @QueryParam("maxPrice") BigDecimal maxPrice,
             @QueryParam("isActive") Boolean isActive,
@@ -83,7 +83,7 @@ public class GpuResource {
     @GET
     @Path("/model/{modelId}")
     public Response findByModel(
-            @PathParam("modelId") UUID modelId,
+            @PathParam("modelId") String modelId,
             @QueryParam("offset") @DefaultValue("0") int offset,
             @QueryParam("limit") @DefaultValue("10") int limit) {
         offset = Math.max(0, offset);
@@ -96,7 +96,7 @@ public class GpuResource {
     @GET
     @Path("/manufacturer/{manufacturerId}")
     public Response findByManufacturer(
-            @PathParam("manufacturerId") UUID manufacturerId,
+            @PathParam("manufacturerId") String manufacturerId,
             @QueryParam("offset") @DefaultValue("0") int offset,
             @QueryParam("limit") @DefaultValue("10") int limit) {
         offset = Math.max(0, offset);
@@ -144,7 +144,7 @@ public class GpuResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") UUID id) {
+    public Response findById(@PathParam("id") String id) {
         return gpuService.findGpuById(id)
                 .map(Response::ok)
                 .orElse(Response.status(Response.Status.NOT_FOUND))
@@ -163,7 +163,7 @@ public class GpuResource {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response update(@PathParam("id") UUID id, @Valid GpuFormRequest form) {
+    public Response update(@PathParam("id") String id, @Valid GpuFormRequest form) {
         GpuRequestDTO dto = form.data();
         List<FileUpload> imagesUpload = form.images();
 
@@ -172,7 +172,7 @@ public class GpuResource {
 
     @PATCH
     @Path("/{id}/status")
-    public Response activate(@PathParam("id") UUID id, @Valid GpuStatusRequestDTO isActive) {
+    public Response activate(@PathParam("id") String id, @Valid GpuStatusRequestDTO isActive) {
         return Response.ok(gpuService.setActiveStatus(id, isActive)).build();
     }
 
@@ -180,7 +180,7 @@ public class GpuResource {
     @Path("/{id}/images")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteImagesFromGpu(
-            @PathParam("id") UUID gpuId,
+            @PathParam("id") String gpuId,
             @Valid ImageDeleteManyRequestDTO deleteManyRequestDTO) {
         imageService.deleteManyFromGpu(gpuId, deleteManyRequestDTO.imageIds());
         return Response.ok().build();
@@ -188,7 +188,7 @@ public class GpuResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") UUID id) {
+    public Response delete(@PathParam("id") String id) {
         return gpuService.deleteGpu(id) == 1
                 ? Response.ok(1).build()
                 : Response.status(Response.Status.NOT_FOUND).build();

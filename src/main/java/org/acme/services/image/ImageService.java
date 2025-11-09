@@ -1,7 +1,7 @@
 package org.acme.services.image;
 
 import java.util.List;
-import java.util.UUID;
+
 
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 import org.acme.dtos.image.ImageResponseDTO;
@@ -12,22 +12,22 @@ public interface ImageService {
     void ensureBucket();
 
     ImageResponseDTO uploadForGpu(
-            UUID gpuId,
+            String gpuId,
             FileUpload uploadFile,
             String altText);
 
     List<ImageResponseDTO> uploadMultipleForGpu(
-            UUID gpuId,
+            String gpuId,
             List<FileUpload> uploadFiles);
-    ImageResponseDTO findById(UUID id);
+    ImageResponseDTO findById(String id);
 
-    List<ImageResponseDTO> findByGpu(UUID gpuId);
+    List<ImageResponseDTO> findByGpu(String gpuId);
 
     List<ImageResponseDTO> findAll();
 
-    void delete(UUID id);
+    void delete(String id);
 
-    void deleteManyFromGpu(UUID gpuId, List<UUID> imageIds);
+    void deleteManyFromGpu(String gpuId, List<String> imageIds);
 
-    void deleteByGpu(UUID gpuId);
+    void deleteByGpu(String gpuId);
 }
