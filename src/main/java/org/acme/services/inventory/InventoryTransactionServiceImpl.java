@@ -3,6 +3,7 @@ package org.acme.services.inventory;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 import org.acme.dtos.inventory.InventoryTransactionRequestDTO;
 import org.acme.dtos.inventory.InventoryTransactionResponseDTO;
@@ -40,7 +41,7 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = transactionRepository.countAll();
+        Long total = transactionRepository.countAll();
 
         List<InventoryTransactionResponseDTO> list = transactions.stream()
                 .map(InventoryTransactionResponseDTO::valueOf)
@@ -50,12 +51,12 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
     }
 
     @Override
-    public PaginationResponseDTO<InventoryTransactionResponseDTO> findByGpu(Long gpuId, PaginationRequestDTO pagination) {
+    public PaginationResponseDTO<InventoryTransactionResponseDTO> findByGpu(UUID gpuId, PaginationRequestDTO pagination) {
         List<InventoryTransaction> transactions = transactionRepository.findByGpuId(gpuId)
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = transactionRepository.findByGpuId(gpuId).count();
+        Long total = transactionRepository.findByGpuId(gpuId).count();
 
         List<InventoryTransactionResponseDTO> list = transactions.stream()
                 .map(InventoryTransactionResponseDTO::valueOf)
@@ -70,7 +71,7 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = transactionRepository.findByTransactionType(type).count();
+        Long total = transactionRepository.findByTransactionType(type).count();
 
         List<InventoryTransactionResponseDTO> list = transactions.stream()
                 .map(InventoryTransactionResponseDTO::valueOf)
@@ -85,7 +86,7 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = transactionRepository.findByDateRange(start, end).count();
+        Long total = transactionRepository.findByDateRange(start, end).count();
 
         List<InventoryTransactionResponseDTO> list = transactions.stream()
                 .map(InventoryTransactionResponseDTO::valueOf)
@@ -95,7 +96,7 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
     }
 
     @Override
-    public Optional<InventoryTransactionResponseDTO> findById(Long id) {
+    public Optional<InventoryTransactionResponseDTO> findById(UUID id) {
         return transactionRepository.findByIdOptional(id).map(InventoryTransactionResponseDTO::valueOf);
     }
 
@@ -131,7 +132,7 @@ public class InventoryTransactionServiceImpl implements InventoryTransactionServ
 
     @Override
     @Transactional
-    public Integer deleteTransaction(Long id) {
+    public Integer deleteTransaction(UUID id) {
         return transactionRepository.deleteById(id) ? 1 : 0;
     }
 }

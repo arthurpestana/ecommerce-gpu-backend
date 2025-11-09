@@ -2,6 +2,7 @@ package org.acme.services.manufacturer;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.acme.dtos.manufacturer.ManufacturerRequestDTO;
@@ -29,7 +30,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     Validator validator;
 
     @Override
-    public Optional<ManufacturerResponseDTO> findManufacturerById(Long id) {
+    public Optional<ManufacturerResponseDTO> findManufacturerById(UUID id) {
         return manufacturerRepository.findManufacturerById(id)
                 .map(ManufacturerResponseDTO::valueOf);
     }
@@ -40,7 +41,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = manufacturerRepository.findByName(name).count();
+        Long total = manufacturerRepository.findByName(name).count();
 
         List<ManufacturerResponseDTO> list = manufacturers.stream()
                 .map(ManufacturerResponseDTO::valueOf)
@@ -55,7 +56,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = manufacturerRepository.countAll();
+        Long total = manufacturerRepository.countAll();
 
         List<ManufacturerResponseDTO> list = manufacturers.stream()
                 .map(ManufacturerResponseDTO::valueOf)
@@ -85,7 +86,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
     @Override
     @Transactional
-    public ManufacturerResponseDTO updateManufacturer(Long id, ManufacturerRequestDTO dto) {
+    public ManufacturerResponseDTO updateManufacturer(UUID id, ManufacturerRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
         if (id == null) {
             throw new IllegalArgumentException("ID do Fabricante não pode ser nulo.");
@@ -108,7 +109,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
     @Override
     @Transactional
-    public Integer deleteManufacturer(Long id) {
+    public Integer deleteManufacturer(UUID id) {
         if (id == null) {
             throw new IllegalArgumentException("ID do Fabricante não pode ser nulo.");
         }

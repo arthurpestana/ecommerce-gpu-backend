@@ -1,9 +1,11 @@
 package org.acme.dtos.manufacturer;
 
+import java.util.UUID;
+
 import org.acme.models.Manufacturer;
 
 public record ManufacturerResponseDTO(
-    Long id,
+    UUID id,
     String name,
     String email,
     String cpnj,

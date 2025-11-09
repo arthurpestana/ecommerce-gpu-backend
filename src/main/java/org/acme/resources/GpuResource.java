@@ -1,13 +1,23 @@
 package org.acme.resources;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.acme.dtos.gpu.GpuRequestDTO;
 import org.acme.dtos.gpu.GpuResponseDTO;
-import org.acme.dtos.gpu.GpuStatusDTO;
+import org.acme.dtos.gpu.GpuStatusRequestDTO;
+import org.acme.dtos.gpu.GpuFormRequest;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.gpu.GpuService;
+
+import org.jboss.resteasy.reactive.multipart.FileUpload;
+import java.util.UUID;
+
+import org.acme.dtos.image.ImageDeleteManyRequestDTO;
+import org.acme.dtos.image.ImageUploadDTO;
+import org.acme.services.image.ImageService;
+import org.jboss.resteasy.reactive.MultipartForm;
 
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -35,11 +45,13 @@ public class GpuResource {
     @Inject
     GpuService gpuService;
 
+    @Inject
+    ImageService imageService;
+
     @GET
     public Response findAll(
-        @QueryParam("offset") @DefaultValue("0") int offset,
-        @QueryParam("limit") @DefaultValue("10") int limit
-    ) {
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit) {
         offset = Math.max(0, offset);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
@@ -51,15 +63,14 @@ public class GpuResource {
     @GET
     @Path("/filter")
     public Response filter(
-        @QueryParam("name") String name,
-        @QueryParam("modelId") Long modelId,
-        @QueryParam("manufacturerId") Long manufacturerId,
-        @QueryParam("minPrice") BigDecimal minPrice,
-        @QueryParam("maxPrice") BigDecimal maxPrice,
-        @QueryParam("isActive") Boolean isActive,
-        @QueryParam("offset") @DefaultValue("0") int offset,
-        @QueryParam("limit") @DefaultValue("10") int limit
-    ) {
+            @QueryParam("name") String name,
+            @QueryParam("modelId") UUID modelId,
+            @QueryParam("manufacturerId") UUID manufacturerId,
+            @QueryParam("minPrice") BigDecimal minPrice,
+            @QueryParam("maxPrice") BigDecimal maxPrice,
+            @QueryParam("isActive") Boolean isActive,
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit) {
 
         offset = Math.max(0, offset);
         limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
@@ -72,12 +83,11 @@ public class GpuResource {
     @GET
     @Path("/model/{modelId}")
     public Response findByModel(
-        @PathParam("modelId") Long modelId,
-        @QueryParam("offset") @DefaultValue("0") int offset,
-        @QueryParam("limit") @DefaultValue("10") int limit
-    ) {
+            @PathParam("modelId") UUID modelId,
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit) {
         offset = Math.max(0, offset);
-        limit  = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
+        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
         PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
         return Response.ok(gpuService.findByModel(modelId, pagination)).build();
@@ -86,12 +96,11 @@ public class GpuResource {
     @GET
     @Path("/manufacturer/{manufacturerId}")
     public Response findByManufacturer(
-        @PathParam("manufacturerId") Long manufacturerId,
-        @QueryParam("offset") @DefaultValue("0") int offset,
-        @QueryParam("limit") @DefaultValue("10") int limit
-    ) {
+            @PathParam("manufacturerId") UUID manufacturerId,
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit) {
         offset = Math.max(0, offset);
-        limit  = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
+        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
         PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
         return Response.ok(gpuService.findByManufacturer(manufacturerId, pagination)).build();
@@ -100,13 +109,12 @@ public class GpuResource {
     @GET
     @Path("/price-range")
     public Response findByPriceRange(
-        @QueryParam("min") BigDecimal min,
-        @QueryParam("max") BigDecimal max,
-        @QueryParam("offset") @DefaultValue("0") int offset,
-        @QueryParam("limit") @DefaultValue("10") int limit
-    ) {
+            @QueryParam("min") BigDecimal min,
+            @QueryParam("max") BigDecimal max,
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit) {
         offset = Math.max(0, offset);
-        limit  = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
+        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
         PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
         return Response.ok(gpuService.findByPriceRange(min, max, pagination)).build();
@@ -124,12 +132,11 @@ public class GpuResource {
     @GET
     @Path("/category/{category}")
     public Response findByCategory(
-        @PathParam("category") String category,
-        @QueryParam("offset") @DefaultValue("0") int offset,
-        @QueryParam("limit") @DefaultValue("10") int limit
-    ) {
+            @PathParam("category") String category,
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit) {
         offset = Math.max(0, offset);
-        limit  = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
+        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
 
         PaginationRequestDTO pagination = new PaginationRequestDTO(offset, limit);
         return Response.ok(gpuService.findByCategory(category, pagination)).build();
@@ -137,7 +144,7 @@ public class GpuResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id) {
+    public Response findById(@PathParam("id") UUID id) {
         return gpuService.findGpuById(id)
                 .map(Response::ok)
                 .orElse(Response.status(Response.Status.NOT_FOUND))
@@ -145,27 +152,45 @@ public class GpuResource {
     }
 
     @POST
-    public Response create(@Valid GpuRequestDTO dto) {
-        return Response.status(Response.Status.CREATED).entity(gpuService.createGpu(dto)).build();
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response create(@Valid GpuFormRequest form) {
+        GpuRequestDTO dto = form.data();
+        List<FileUpload> imagesUpload = form.images();
+
+        return Response.status(Response.Status.CREATED).entity(gpuService.createGpu(dto, imagesUpload)).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, @Valid GpuRequestDTO dto) {
-        return Response.ok(gpuService.updateGpu(id, dto)).build();
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response update(@PathParam("id") UUID id, @Valid GpuFormRequest form) {
+        GpuRequestDTO dto = form.data();
+        List<FileUpload> imagesUpload = form.images();
+
+        return Response.ok(gpuService.updateGpu(id, dto, imagesUpload)).build();
     }
 
     @PATCH
     @Path("/{id}/status")
-    public Response activate(@PathParam("id") Long id, @Valid GpuStatusDTO isActive) {
+    public Response activate(@PathParam("id") UUID id, @Valid GpuStatusRequestDTO isActive) {
         return Response.ok(gpuService.setActiveStatus(id, isActive)).build();
     }
 
     @DELETE
+    @Path("/{id}/images")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteImagesFromGpu(
+            @PathParam("id") UUID gpuId,
+            @Valid ImageDeleteManyRequestDTO deleteManyRequestDTO) {
+        imageService.deleteManyFromGpu(gpuId, deleteManyRequestDTO.imageIds());
+        return Response.ok().build();
+    }
+
+    @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") UUID id) {
         return gpuService.deleteGpu(id) == 1
-                ? Response.noContent().build()
+                ? Response.ok(1).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
     }
 }

@@ -3,6 +3,7 @@ package org.acme.services.model;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 import org.acme.dtos.model.ModelRequestDTO;
 import org.acme.dtos.model.ModelResponseDTO;
@@ -34,7 +35,7 @@ public class ModelServiceImpl implements ModelService {
     Validator validator;
 
     @Override
-    public Optional<ModelResponseDTO> findModelById(Long id) {
+    public Optional<ModelResponseDTO> findModelById(UUID id) {
         return modelRepository.findModelById(id)
                 .map(ModelResponseDTO::valueOf);
     }
@@ -45,7 +46,7 @@ public class ModelServiceImpl implements ModelService {
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = modelRepository.findByName(name).count();
+        Long total = modelRepository.findByName(name).count();
 
         List<ModelResponseDTO> list = models.stream()
                 .map(ModelResponseDTO::valueOf)
@@ -55,12 +56,12 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public PaginationResponseDTO<ModelResponseDTO> findModelByManufacturer(Long manufacturerId, PaginationRequestDTO pagination) {
+    public PaginationResponseDTO<ModelResponseDTO> findModelByManufacturer(UUID manufacturerId, PaginationRequestDTO pagination) {
         List<Model> models = modelRepository.findByManufacturerId(manufacturerId)
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = modelRepository.findByManufacturerId(manufacturerId).count();
+        Long total = modelRepository.findByManufacturerId(manufacturerId).count();
 
         List<ModelResponseDTO> list = models.stream()
                 .map(ModelResponseDTO::valueOf)
@@ -75,7 +76,7 @@ public class ModelServiceImpl implements ModelService {
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = modelRepository.countAll();
+        Long total = modelRepository.countAll();
 
         List<ModelResponseDTO> list = models.stream()
                 .map(ModelResponseDTO::valueOf)
@@ -107,7 +108,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @Transactional
-    public ModelResponseDTO updateModel(Long id, ModelRequestDTO dto) {
+    public ModelResponseDTO updateModel(UUID id, ModelRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
         if (id == null) {
             throw new IllegalArgumentException("ID do Modelo não pode ser nulo.");
@@ -130,7 +131,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @Transactional
-    public Integer deleteModel(Long id) {
+    public Integer deleteModel(UUID id) {
         if (id == null) {
             throw new IllegalArgumentException("ID do Modelo não pode ser nulo.");
         }

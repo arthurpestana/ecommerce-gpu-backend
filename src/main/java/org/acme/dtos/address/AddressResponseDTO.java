@@ -1,10 +1,12 @@
 package org.acme.dtos.address;
 
+import java.util.UUID;
+
 import org.acme.dtos.user.UserResponseDTO;
 import org.acme.models.Address;
 
 public record AddressResponseDTO(
-    Long id,
+    UUID id,
     String street,
     String city,
     String state,

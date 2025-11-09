@@ -1,6 +1,7 @@
 package org.acme.models;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,8 +14,8 @@ import jakarta.persistence.PreUpdate;
 public class DefaultEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private LocalDateTime createdAt;
 
@@ -30,11 +31,11 @@ public class DefaultEntity {
         setUpdatedAt(LocalDateTime.now());
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

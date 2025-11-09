@@ -1,21 +1,22 @@
 package org.acme.repositories;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.acme.models.User;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class UserRepository implements PanacheRepository<User> {
+public class UserRepository implements PanacheRepositoryBase<User, UUID> {
 
     public PanacheQuery<User> findAllUsers() {
         return findAll();
     }
 
-    public Optional<User> findUserById(Long id) {
+    public Optional<User> findUserById(UUID id) {
         return findByIdOptional(id);
     }
 
@@ -55,11 +56,11 @@ public class UserRepository implements PanacheRepository<User> {
         return find("phoneNumber", phoneNumber).firstResultOptional().isPresent();
     }
     
-    public long countAll() {
+    public Long countAll() {
         return count();
     }
 
-    public long countActiveUsers() {
+    public Long countActiveUsers() {
         return count("isActive", true);
     }
 }

@@ -2,9 +2,10 @@ package org.acme.dtos.user;
 
 import org.acme.models.User;
 import org.acme.models.enums.UserRoles;
+import java.util.UUID;
 
 public record UserResponseDTO(
-    Long id,
+    UUID id,
     String name,
     String email,
     String phoneNumber,

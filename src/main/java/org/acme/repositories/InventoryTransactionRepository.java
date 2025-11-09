@@ -1,22 +1,23 @@
 package org.acme.repositories;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 import org.acme.models.InventoryTransaction;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @ApplicationScoped
-public class InventoryTransactionRepository implements PanacheRepository<InventoryTransaction> {
+public class InventoryTransactionRepository implements PanacheRepositoryBase<InventoryTransaction, UUID> {
 
     public PanacheQuery<InventoryTransaction> findAllTransactions() {
         return findAll();
     }
 
-    public PanacheQuery<InventoryTransaction> findByGpuId(Long gpuId) {
+    public PanacheQuery<InventoryTransaction> findByGpuId(UUID gpuId) {
         return find("gpu.id", gpuId);
     }
 
@@ -32,7 +33,7 @@ public class InventoryTransactionRepository implements PanacheRepository<Invento
         return find("ORDER BY transactionDate DESC").page(0, limit).list();
     }
 
-    public long countAll() {
+    public Long countAll() {
         return count();
     }
 }

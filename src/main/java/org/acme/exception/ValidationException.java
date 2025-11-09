@@ -3,7 +3,7 @@ package org.acme.exception;
 import java.util.List;
 
 public class ValidationException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
     private final List<Problem.FieldError> fieldErrors;
 
     public ValidationException(String msg, List<Problem.FieldError> errors) {

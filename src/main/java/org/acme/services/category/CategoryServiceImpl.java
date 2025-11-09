@@ -3,6 +3,7 @@ package org.acme.services.category;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 import org.acme.utils.StringUtils;
 import org.acme.utils.ValidationUtils;
@@ -29,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     Validator validator;
 
     @Override
-    public Optional<CategoryResponseDTO> findCategoryById(Long id) {
+    public Optional<CategoryResponseDTO> findCategoryById(UUID id) {
         return categoryRepository.findByIdOptional(id)
                 .map(CategoryResponseDTO::valueOf);
     }
@@ -88,7 +89,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO dto) {
+    public CategoryResponseDTO updateCategory(UUID id, CategoryRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
         if (id == null) {
             throw new IllegalArgumentException("ID da Categoria não pode ser nulo.");
@@ -107,7 +108,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Integer deleteCategory(Long id) {
+    public Integer deleteCategory(UUID id) {
         if (id == null) {
             throw new IllegalArgumentException("ID da Categoria não pode ser nulo.");
         }

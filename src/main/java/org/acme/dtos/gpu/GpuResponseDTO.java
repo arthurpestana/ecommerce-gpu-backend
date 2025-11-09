@@ -3,15 +3,16 @@ package org.acme.dtos.gpu;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.acme.dtos.category.CategoryResponseDTO;
+import org.acme.dtos.image.ImageResponseDTO;
 import org.acme.dtos.model.ModelResponseDTO;
 import org.acme.dtos.technology.TechnologyResponseDTO;
-import org.acme.dtos.image.ImageResponseDTO;
 import org.acme.models.Gpu;
 
 public record GpuResponseDTO(
-    Long id,
+    UUID id,
     String name,
     String description,
     BigDecimal price,

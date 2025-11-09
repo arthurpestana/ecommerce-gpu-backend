@@ -1,15 +1,18 @@
 package org.acme.dtos.inventory;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.acme.models.enums.TransactionTypes;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record InventoryTransactionRequestDTO(
 
     @NotNull(message = "O ID da GPU é obrigatório")
-    Long gpuId,
+    UUID gpuId,
 
     @NotNull(message = "A quantidade é obrigatória")
     @Min(value = 1, message = "A quantidade deve ser maior que zero")

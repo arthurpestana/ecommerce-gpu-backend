@@ -3,6 +3,7 @@ package org.acme.services.user;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
     Validator validator;
 
     @Override
-    public Optional<UserResponseDTO> findUserById(Long id) {
+    public Optional<UserResponseDTO> findUserById(UUID id) {
         return userRepository.findByIdOptional(id)
                 .map(UserResponseDTO::valueOf);
     }
@@ -113,7 +114,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO updateUser(Long id, UserRequestDTO dto) {
+    public UserResponseDTO updateUser(UUID id, UserRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
         if (id == null) {
             throw new IllegalArgumentException("ID do Usuário não pode ser nulo.");
@@ -138,7 +139,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Integer deleteUser(Long id) {
+    public Integer deleteUser(UUID id) {
         if (id == null) {
             throw new IllegalArgumentException("ID do Usuário não pode ser nulo.");
         }

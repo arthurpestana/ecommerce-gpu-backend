@@ -3,6 +3,7 @@ package org.acme.services.address;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 import org.acme.dtos.address.AddressRequestDTO;
 import org.acme.dtos.address.AddressResponseDTO;
@@ -34,7 +35,7 @@ public class AddressServiceImpl implements AddressService {
     Validator validator;
 
     @Override
-    public Optional<AddressResponseDTO> findAddressById(Long id) {
+    public Optional<AddressResponseDTO> findAddressById(UUID id) {
         return addressRepository.findAddressById(id)
                 .map(AddressResponseDTO::valueOf);
     }
@@ -45,7 +46,7 @@ public class AddressServiceImpl implements AddressService {
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = addressRepository.findByCity(city).count();
+        Long total = addressRepository.findByCity(city).count();
 
         List<AddressResponseDTO> addressList = addresses.stream()
                 .map(AddressResponseDTO::valueOf)
@@ -55,12 +56,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public PaginationResponseDTO<AddressResponseDTO> findAddressByUser(Long userId, PaginationRequestDTO pagination) {
+    public PaginationResponseDTO<AddressResponseDTO> findAddressByUser(UUID userId, PaginationRequestDTO pagination) {
         List<Address> addresses = addressRepository.findByUserId(userId)
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = addressRepository.findByUserId(userId).count();
+        Long total = addressRepository.findByUserId(userId).count();
 
         List<AddressResponseDTO> addressList = addresses.stream()
                 .map(AddressResponseDTO::valueOf)
@@ -75,7 +76,7 @@ public class AddressServiceImpl implements AddressService {
                 .page(pagination.offset(), pagination.limit())
                 .list();
 
-        long total = addressRepository.countAll();
+        Long total = addressRepository.countAll();
 
         List<AddressResponseDTO> addressList = addresses.stream()
                 .map(AddressResponseDTO::valueOf)
@@ -106,7 +107,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    public AddressResponseDTO updateAddress(Long id, AddressRequestDTO dto) {
+    public AddressResponseDTO updateAddress(UUID id, AddressRequestDTO dto) {
         ValidationUtils.validateDto(validator, dto);
         if (id == null) {
             throw new IllegalArgumentException("ID do Endereço não pode ser nulo.");
@@ -132,7 +133,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    public Integer deleteAddress(Long id) {
+    public Integer deleteAddress(UUID id) {
         if (id == null) {
             throw new IllegalArgumentException("ID do Endereço não pode ser nulo.");
         }

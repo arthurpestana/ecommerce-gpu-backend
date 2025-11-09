@@ -1,6 +1,6 @@
 package org.acme.dtos.shared.pagination;
 
-import java.util.List;
+import java.util.*;
 
 public record PaginationResponseDTO<T>(
     List<T> items,

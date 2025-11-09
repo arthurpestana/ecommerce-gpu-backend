@@ -16,6 +16,9 @@ public class Image extends DefaultEntity {
     @Column(name="alt_text", length=150, nullable = true)
     private String altText;
 
+    @Column(name="object_name", length=1000, nullable = false)
+    private String objectName;
+
     @ManyToOne
     @JoinColumn(name="gpu_id", nullable = false)
     private Gpu gpu;
@@ -34,6 +37,14 @@ public class Image extends DefaultEntity {
 
     public void setAltText(String altText) {
         this.altText = altText;
+    }
+
+    public String getObjectName() {
+        return objectName;
+    }
+
+    public void setObjectName(String objectName) {
+        this.objectName = objectName;
     }
 
     public Gpu getGpu() {

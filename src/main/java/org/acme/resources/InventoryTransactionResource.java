@@ -7,6 +7,7 @@ import org.acme.dtos.inventory.InventoryTransactionResponseDTO;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.inventory.InventoryTransactionService;
+import java.util.UUID;
 
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -39,7 +40,7 @@ public class InventoryTransactionResource {
     @GET
     @Path("/gpu/{gpuId}")
     public Response findByGpu(
-        @PathParam("gpuId") Long gpuId,
+        @PathParam("gpuId") UUID gpuId,
         @QueryParam("offset") @DefaultValue("0") int offset,
         @QueryParam("limit")  @DefaultValue("10") int limit
     ) {
@@ -84,7 +85,7 @@ public class InventoryTransactionResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id) {
+    public Response findById(@PathParam("id") UUID id) {
         return transactionService.findById(id)
                 .map(Response::ok)
                 .orElse(Response.status(Response.Status.NOT_FOUND))
@@ -99,7 +100,7 @@ public class InventoryTransactionResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") UUID id) {
         return transactionService.deleteTransaction(id) == 1
                 ? Response.noContent().build()
                 : Response.status(Response.Status.NOT_FOUND).build();
