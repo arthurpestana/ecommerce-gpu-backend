@@ -6,6 +6,7 @@ import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.manufacturer.ManufacturerService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -75,6 +76,7 @@ public class ManufacturerResource {
     }
 
     @POST
+    @RolesAllowed("ADMIN")
     public Response create(@Valid ManufacturerRequestDTO dto) {
         ManufacturerResponseDTO created = manufacturerService.createManufacturer(dto);
         return Response.status(Status.CREATED).entity(created).build();
@@ -82,6 +84,7 @@ public class ManufacturerResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") String id, @Valid ManufacturerRequestDTO dto) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
@@ -93,6 +96,7 @@ public class ManufacturerResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();

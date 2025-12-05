@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.dtos.user.UserRequestDTO;
 import org.acme.dtos.user.UserResponseDTO;
+import org.acme.dtos.user.UserStatusRequestDTO;
 import org.acme.models.User;
 import org.acme.models.enums.UserRoles;
 import org.acme.repositories.UserRepository;
@@ -135,6 +135,21 @@ public class UserServiceImpl implements UserService {
 
         userRepository.persist(updatedUser);
         return UserResponseDTO.valueOf(updatedUser);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDTO setActiveStatus(String id, UserStatusRequestDTO dto) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID do Usuário não pode ser nulo.");
+        }
+
+        User user = userRepository.findByIdOptional(id)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado com o ID: " + id));
+
+        user.setIsActive(dto.isActive());
+        userRepository.persist(user);
+        return UserResponseDTO.valueOf(user);
     }
 
     @Override

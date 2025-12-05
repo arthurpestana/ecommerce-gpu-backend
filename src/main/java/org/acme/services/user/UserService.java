@@ -2,11 +2,11 @@ package org.acme.services.user;
 
 import java.util.Optional;
 
-
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.dtos.user.UserRequestDTO;
 import org.acme.dtos.user.UserResponseDTO;
+import org.acme.dtos.user.UserStatusRequestDTO;
 
 public interface UserService {
 
@@ -16,5 +16,6 @@ public interface UserService {
     UserResponseDTO findUserByEmail(String email);
     UserResponseDTO createUser(UserRequestDTO dto);
     UserResponseDTO updateUser(String id, UserRequestDTO dto);
+    UserResponseDTO setActiveStatus(String id, UserStatusRequestDTO isActive);
     Integer deleteUser(String id);
 }

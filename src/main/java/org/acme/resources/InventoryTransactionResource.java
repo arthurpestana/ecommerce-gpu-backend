@@ -8,11 +8,20 @@ import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.inventory.InventoryTransactionService;
 
-
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/inventory")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,6 +34,7 @@ public class InventoryTransactionResource {
     InventoryTransactionService transactionService;
 
     @GET
+    @RolesAllowed("ADMIN")
     public Response findAll(
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("limit")  @DefaultValue("10") int limit
@@ -39,6 +49,7 @@ public class InventoryTransactionResource {
 
     @GET
     @Path("/gpu/{gpuId}")
+    @RolesAllowed("ADMIN")
     public Response findByGpu(
         @PathParam("gpuId") String gpuId,
         @QueryParam("page") @DefaultValue("0") int page,
@@ -53,6 +64,7 @@ public class InventoryTransactionResource {
 
     @GET
     @Path("/type/{type}")
+    @RolesAllowed("ADMIN")
     public Response findByType(
         @PathParam("type") String type,
         @QueryParam("page") @DefaultValue("0") int page,
@@ -67,6 +79,7 @@ public class InventoryTransactionResource {
 
     @GET
     @Path("/date-range")
+    @RolesAllowed("ADMIN")
     public Response findByDateRange(
         @QueryParam("start") String start,
         @QueryParam("end") String end,
@@ -85,6 +98,7 @@ public class InventoryTransactionResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response findById(@PathParam("id") String id) {
         return transactionService.findById(id)
                 .map(Response::ok)
@@ -93,6 +107,7 @@ public class InventoryTransactionResource {
     }
 
     @POST
+    @RolesAllowed("ADMIN")
     public Response create(@Valid InventoryTransactionRequestDTO dto) {
         InventoryTransactionResponseDTO created = transactionService.createTransaction(dto);
         return Response.status(Response.Status.CREATED).entity(created).build();
@@ -100,6 +115,7 @@ public class InventoryTransactionResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") String id) {
         return transactionService.deleteTransaction(id) == 1
                 ? Response.noContent().build()

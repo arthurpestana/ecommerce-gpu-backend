@@ -1,18 +1,15 @@
 package org.acme.models.enums;
 
-public enum OrderStatus {
-    PENDING_PAYMENT(1, "PENDING_PAYMENT"),
-    PROCESSING(2, "PROCESSING"),
-    PAID(3, "PAID"),
-    PAYMENT_FAILED(4, "PAYMENT_FAILED"),
-    SHIPPED(5, "SHIPPED"),
-    DELIVERED(6, "DELIVERED"),
-    CANCELED(7, "CANCELED");
+public enum PaymentStatus {
+    PENDING(1, "PENDING"),
+    APPROVED(2, "APPROVED"),
+    REJECTED(3, "REJECTED"),
+    CANCELED(4, "CANCELED");
 
     private final int id;
     private final String name;
 
-    OrderStatus(int id, String name) {
+    PaymentStatus(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -25,10 +22,10 @@ public enum OrderStatus {
         return name;
     }
 
-    public static OrderStatus valueOf(Integer id) {
+    public static PaymentStatus valueOf(Integer id) {
         if (id == null)
             return null;
-        for (OrderStatus status : OrderStatus.values()) {
+        for (PaymentStatus status : PaymentStatus.values()) {
             if (status.getId() == id)
                 return status;
         }

@@ -1,28 +1,34 @@
 package org.acme.models;
 
-import jakarta.persistence.*;
 import java.util.Set;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "addresses")
 public class Address extends DefaultEntity {
-    @Column(name="street", length=150, nullable = false)
+    @Column(name = "street", length = 150, nullable = false)
     private String street;
 
-    @Column(name="city", length=100, nullable = false)
+    @Column(name = "city", length = 100, nullable = false)
     private String city;
 
-    @Column(name="state", length=100, nullable = false)
+    @Column(name = "state", length = 100, nullable = false)
     private String state;
 
-    @Column(name="zip_code", length=20, nullable = false)
+    @Column(name = "zip_code", length = 20, nullable = false)
     private String zipCode;
 
-    @Column(name="country", length=100, nullable = false)
+    @Column(name = "country", length = 100, nullable = false)
     private String country;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "address")

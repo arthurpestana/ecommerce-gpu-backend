@@ -3,22 +3,18 @@ package org.acme.resources;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.acme.dtos.gpu.GpuFormRequest;
 import org.acme.dtos.gpu.GpuRequestDTO;
 import org.acme.dtos.gpu.GpuResponseDTO;
 import org.acme.dtos.gpu.GpuStatusRequestDTO;
-import org.acme.dtos.gpu.GpuFormRequest;
+import org.acme.dtos.image.ImageDeleteManyRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.gpu.GpuService;
-
+import org.acme.services.image.ImageService;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
-
-import org.acme.dtos.image.ImageDeleteManyRequestDTO;
-import org.acme.dtos.image.ImageUploadDTO;
-import org.acme.services.image.ImageService;
-import org.jboss.resteasy.reactive.MultipartForm;
-
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -153,6 +149,7 @@ public class GpuResource {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @RolesAllowed("ADMIN")
     public Response create(@Valid GpuFormRequest form) {
         GpuRequestDTO dto = form.data();
         List<FileUpload> imagesUpload = form.images();
@@ -163,6 +160,7 @@ public class GpuResource {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") String id, @Valid GpuFormRequest form) {
         GpuRequestDTO dto = form.data();
         List<FileUpload> imagesUpload = form.images();
@@ -172,12 +170,14 @@ public class GpuResource {
 
     @PATCH
     @Path("/{id}/status")
+    @RolesAllowed("ADMIN")
     public Response activate(@PathParam("id") String id, @Valid GpuStatusRequestDTO isActive) {
         return Response.ok(gpuService.setActiveStatus(id, isActive)).build();
     }
 
     @DELETE
     @Path("/{id}/images")
+    @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteImagesFromGpu(
             @PathParam("id") String gpuId,
@@ -188,6 +188,7 @@ public class GpuResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") String id) {
         return gpuService.deleteGpu(id) == 1
                 ? Response.ok(1).build()

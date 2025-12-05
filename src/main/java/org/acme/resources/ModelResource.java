@@ -6,6 +6,7 @@ import org.acme.dtos.shared.pagination.PaginationRequestDTO;
 import org.acme.dtos.shared.pagination.PaginationResponseDTO;
 import org.acme.services.model.ModelService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -94,6 +95,7 @@ public class ModelResource {
     }
 
     @POST
+    @RolesAllowed("ADMIN")
     public Response create(@Valid ModelRequestDTO dto) {
         ModelResponseDTO created = modelService.createModel(dto);
         return Response.status(Status.CREATED).entity(created).build();
@@ -101,6 +103,7 @@ public class ModelResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") String id, @Valid ModelRequestDTO dto) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
@@ -112,6 +115,7 @@ public class ModelResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") String id) {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).entity("ID inválido fornecido.").build();
