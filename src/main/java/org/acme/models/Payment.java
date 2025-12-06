@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 @Table(name = "payments")
 public class Payment extends DefaultEntity {
 
-    @Column(name = "gateway_payment_id", nullable = false, unique = true)
+    @Column(name = "gateway_payment_id", nullable = true, unique = true)
     private String gatewayPaymentId;
 
     @Enumerated(EnumType.STRING)

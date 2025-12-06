@@ -22,7 +22,9 @@ import org.acme.repositories.AddressRepository;
 import org.acme.repositories.GpuRepository;
 import org.acme.repositories.OrderRepository;
 import org.acme.repositories.PaymentRepository;
+import org.acme.repositories.UserRepository;
 import org.acme.services.inventory.InventoryTransactionService;
+import org.acme.services.paymentGateway.PaymentGatewayService;
 import org.acme.utils.ValidationUtils;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -49,8 +51,11 @@ public class OrderServiceImpl implements OrderService {
     @Inject
     AddressRepository addressRepository;
 
-    // @Inject
-    // PaymentGatewayService paymentGatewayService;
+    @Inject
+    UserRepository userRepository;
+
+    @Inject
+    PaymentGatewayService paymentGatewayService;
 
     @Inject
     InventoryTransactionService inventoryService;
@@ -104,10 +109,15 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDate(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.PENDING_PAYMENT);
 
+        var user = userRepository.findByIdOptional(dto.userId())
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+
         var address = addressRepository.findByIdOptional(dto.addressId())
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
         order.setAddress(address);
+
+        order.setUser(user);
 
         applyOrderItems(dto.items(), order);
 
@@ -121,11 +131,12 @@ public class OrderServiceImpl implements OrderService {
 
         paymentRepository.persist(payment);
 
-        // var checkout = paymentGatewayService.createCheckoutPayment(payment);
-        // payment.setGatewayPaymentId(checkout.gatewayPaymentId());
+        var checkout = paymentGatewayService.createCheckoutPayment(payment);
+        payment.setGatewayPaymentId(checkout.gatewayPaymentId());
 
-        // return OrderResponseDTO.valueOf(order, checkout.checkoutUrl());
-        return OrderResponseDTO.valueOf(order);
+        System.out.println("Checkout URL: " + checkout.checkoutUrl());
+        return OrderResponseDTO.valueOf(order, checkout.checkoutUrl());
+        // return OrderResponseDTO.valueOf(order);
     }
 
     @Override

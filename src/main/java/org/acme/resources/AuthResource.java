@@ -19,7 +19,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -48,21 +47,23 @@ public class AuthResource {
     public Response register(@Valid RegisterRequestDTO dto) {
         AuthResponseDTO response = authService.register(dto);
 
-        return Response.status(Status.CREATED)
-                .entity(response)
-                .header("Authorization", "Bearer " + response.token())
-                .build();
+       return Response.ok(response).header("Authorization", "Bearer " + response.token()).build();
     }
 
     @GET
     @Path("/me")
     @RolesAllowed({"ADMIN", "CUSTOMER"})
     public Response me() {
+        System.out.println("Fetching authenticated user info for userId: " + auth.getUserId());
         String userId = auth.getUserId();
 
-        UserResponseDTO user = userService.findUserById(userId)
-                .orElseThrow(() -> new NotFoundException("Usuário autenticado não encontrado."));
+        var user = userService.findUserById(userId);
+        if (user.isEmpty()) {
+            throw new NotFoundException("Usuário não encontrado");
+        }
 
-        return Response.ok(user).build();
+        UserResponseDTO userResponse = user.get();
+
+        return Response.ok(userResponse).build();
     }
 }

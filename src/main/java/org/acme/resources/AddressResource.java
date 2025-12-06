@@ -103,7 +103,7 @@ public class AddressResource {
         AddressResponseDTO address = addressService.findAddressById(id)
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
-        if (auth.isCustomer() && !auth.getUserId().equals(address.user().id())) {
+        if (auth.isCustomer() && !auth.getUserId().equals(address.userId())) {
             return Response.status(Status.FORBIDDEN)
                     .entity("Você não tem permissão para acessar esse endereço.")
                     .build();
@@ -131,7 +131,7 @@ public class AddressResource {
         AddressResponseDTO address = addressService.findAddressById(id)
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
-        if (auth.isCustomer() && !auth.getUserId().equals(address.user().id())) {
+        if (auth.isCustomer() && !auth.getUserId().equals(address.userId())) {
             return Response.status(Status.FORBIDDEN)
                     .entity("Você não pode atualizar um endereço de outro usuário.")
                     .build();
@@ -148,7 +148,7 @@ public class AddressResource {
         AddressResponseDTO address = addressService.findAddressById(id)
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
-        if (auth.isCustomer() && !auth.getUserId().equals(address.user().id())) {
+        if (auth.isCustomer() && !auth.getUserId().equals(address.userId())) {
             return Response.status(Status.FORBIDDEN)
                     .entity("Você não pode excluir um endereço de outro usuário.")
                     .build();

@@ -2,7 +2,6 @@ package org.acme.dtos.address;
 
 
 
-import org.acme.dtos.user.UserResponseDTO;
 import org.acme.models.Address;
 
 public record AddressResponseDTO(
@@ -12,7 +11,7 @@ public record AddressResponseDTO(
     String state,
     String zipCode,
     String country,
-    UserResponseDTO user
+    String userId
 ) {
     public static AddressResponseDTO valueOf(Address address) {
         if (address == null) return null;
@@ -24,7 +23,7 @@ public record AddressResponseDTO(
             address.getState(),
             address.getZipCode(),
             address.getCountry(),
-            UserResponseDTO.valueOf(address.getUser())
+            address.getUser() != null ? address.getUser().getId() : null
         );
     }
 }

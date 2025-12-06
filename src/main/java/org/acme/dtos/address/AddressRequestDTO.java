@@ -22,7 +22,7 @@ public record AddressRequestDTO(
     String state,
 
     @NotBlank(message = "O CEP é obrigatório")
-    @Pattern(regexp = "\\d{5}-?\\d{3}", message = "O CEP deve ter o formato 99999-999")
+    @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 dígitos numéricos")
     String zipCode,
 
     @NotBlank(message = "O país é obrigatório")

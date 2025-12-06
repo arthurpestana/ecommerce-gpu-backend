@@ -36,7 +36,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
-
 @ApplicationScoped
 public class GpuServiceImpl implements GpuService {
 
@@ -139,20 +138,6 @@ public class GpuServiceImpl implements GpuService {
     }
 
     @Override
-    public PaginationResponseDTO<GpuResponseDTO> findByCategory(String categoryName, PaginationRequestDTO pagination) {
-        List<Gpu> gpus = gpuRepository.findByCategoryName(categoryName).page(pagination.page(), pagination.limit())
-                .list();
-
-        Long total = gpuRepository.findByCategoryName(categoryName).count();
-
-        List<GpuResponseDTO> gpuList = gpus.stream()
-                .map(GpuResponseDTO::valueOf)
-                .collect(Collectors.toList());
-
-        return new PaginationResponseDTO<>(gpuList, pagination.page(), pagination.limit(), total);
-    }
-
-    @Override
     public PaginationResponseDTO<GpuResponseDTO> findFiltered(
             String name,
             String modelId,
@@ -160,12 +145,20 @@ public class GpuServiceImpl implements GpuService {
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Boolean isActive,
+            String categoryId,
             PaginationRequestDTO pagination) {
 
-        List<Gpu> gpus = gpuRepository.findFiltered(name, modelId, manufacturerId, minPrice, maxPrice, isActive)
-                .page(pagination.page(), pagination.limit()).list();
+        var query = gpuRepository.findFiltered(
+                name,
+                modelId,
+                manufacturerId,
+                minPrice,
+                maxPrice,
+                isActive,
+                categoryId);
 
-        Long total = gpuRepository.findFiltered(name, modelId, manufacturerId, minPrice, maxPrice, isActive).count();
+        List<Gpu> gpus = query.page(pagination.page(), pagination.limit()).list();
+        Long total = query.count();
 
         List<GpuResponseDTO> gpuList = gpus.stream()
                 .map(GpuResponseDTO::valueOf)

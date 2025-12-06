@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.acme.dtos.category.CategoryResponseDTO;
 import org.acme.dtos.image.ImageResponseDTO;
+import org.acme.dtos.manufacturer.ManufacturerResponseDTO;
 import org.acme.dtos.model.ModelResponseDTO;
 import org.acme.dtos.technology.TechnologyResponseDTO;
 import org.acme.models.Gpu;
@@ -22,6 +23,7 @@ public record GpuResponseDTO(
     String architecture,
     Integer energyConsumption,
     ModelResponseDTO model,
+    ManufacturerResponseDTO manufacturer,
     List<ImageResponseDTO> images,
     Set<TechnologyResponseDTO> technologies,
     Set<CategoryResponseDTO> categories
@@ -40,6 +42,7 @@ public record GpuResponseDTO(
             gpu.getArchitecture(),
             gpu.getEnergyConsumption(),
             ModelResponseDTO.valueOf(gpu.getModel()),
+            ManufacturerResponseDTO.valueOf(gpu.getModel().getManufacturer()),
             gpu.getImages() != null ? gpu.getImages().stream().map(ImageResponseDTO::valueOf).toList() : List.of(),
             gpu.getTechnologies() != null ? gpu.getTechnologies().stream().map(TechnologyResponseDTO::valueOf).collect(java.util.stream.Collectors.toSet()) : Set.of(),
             gpu.getCategories() != null ? gpu.getCategories().stream().map(CategoryResponseDTO::valueOf).collect(java.util.stream.Collectors.toSet()) : Set.of()

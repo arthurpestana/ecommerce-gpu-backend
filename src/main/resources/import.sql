@@ -3,9 +3,9 @@
 ------------------------------------------------------------
 INSERT INTO manufacturers (id, name, email, cnpj, country)
 VALUES 
-    (gen_random_uuid(), 'NVIDIA Corporation', 'contact@nvidia.com', '12.345.678/0001-99', 'USA'),
-    (gen_random_uuid(), 'AMD Technologies', 'info@amd.com', '98.765.432/0001-88', 'USA'),
-    (gen_random_uuid(), 'Intel Graphics', 'support@intel.com', '11.222.333/0001-00', 'USA');
+    (gen_random_uuid(), 'NVIDIA Corporation', 'contact@nvidia.com', '12345678000199', 'USA'),
+    (gen_random_uuid(), 'AMD Technologies', 'info@amd.com', '98765432000188', 'USA'),
+    (gen_random_uuid(), 'Intel Graphics', 'support@intel.com', '11222333000100', 'USA');
 
 ------------------------------------------------------------
 -- MODELOS
@@ -114,19 +114,19 @@ VALUES
 ------------------------------------------------------------
 INSERT INTO users (id, name, email, phone_number, cpf, password, role, is_active)
 VALUES
-    (gen_random_uuid(), 'Arthur Schneider', 'arthur@magistrar.com', '+55 63 99999-0001', '12345678900', 'hashed123', 'ADMIN', TRUE),
-    (gen_random_uuid(), 'João Pereira', 'joao@gmail.com', '+55 63 98888-1111', '98765432100', 'hashed456', 'CUSTOMER', TRUE),
-    (gen_random_uuid(), 'Maria Silva', 'maria@gmail.com', '+55 63 97777-2222', '19283746500', 'hashed789', 'CUSTOMER', TRUE);
+    (gen_random_uuid(), 'Arthur Schneider', 'arthur@magistrar.com', '63999990001', '12345678900', 'hashed123', 'ADMIN', TRUE),
+    (gen_random_uuid(), 'João Pereira', 'joao@gmail.com', '63988881111', '98765432100', 'hashed456', 'CUSTOMER', TRUE),
+    (gen_random_uuid(), 'Maria Silva', 'maria@gmail.com', '63977772222', '19283746500', 'hashed789', 'CUSTOMER', TRUE);
 
 ------------------------------------------------------------
 -- ENDEREÇOS
 ------------------------------------------------------------
 INSERT INTO addresses (id, street, city, state, zip_code, country, user_id)
 VALUES
-    (gen_random_uuid(), 'Av. JK, 1234', 'Palmas', 'TO', '77000-000', 'Brasil',
+    (gen_random_uuid(), 'Av. JK, 1234', 'Palmas', 'TO', '77000000', 'Brasil',
         (SELECT id FROM users WHERE email='joao@gmail.com')),
 
-    (gen_random_uuid(), 'Rua das Flores, 98', 'Gurupi', 'TO', '77400-000', 'Brasil',
+    (gen_random_uuid(), 'Rua das Flores, 98', 'Gurupi', 'TO', '77400000', 'Brasil',
         (SELECT id FROM users WHERE email='maria@gmail.com'));
 
 ------------------------------------------------------------
@@ -138,3 +138,64 @@ VALUES
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 2, '2025-10-05T15:30:00', 'Venda de duas unidades', 'REMOVE'),
     (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', 10, '2025-10-02T09:00:00', 'Recebimento de remessa', 'ADD'),
     (gen_random_uuid(), '33333333-3333-3333-3333-333333333333', 40, '2025-10-03T12:00:00', 'Primeiro lote recebido', 'ADD');
+
+------------------------------------------------------------
+-- PEDIDOS E PAGAMENTOS
+------------------------------------------------------------
+
+INSERT INTO orders (
+    id,
+    order_date,
+    total_amount,
+    order_status,
+    user_id,
+    address_id
+)
+VALUES (
+    'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+    NOW(),
+    24999.89,
+    'PENDING_PAYMENT',
+    (SELECT id FROM users WHERE email = 'joao@gmail.com'),
+    (SELECT id FROM addresses 
+     WHERE user_id = (SELECT id FROM users WHERE email='joao@gmail.com')
+     LIMIT 1)
+);
+
+INSERT INTO order_items (
+    id,
+    quantity,
+    price,
+    order_id,
+    gpu_id
+)
+VALUES
+(
+    gen_random_uuid(),
+    1,
+    15999.90,
+    'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+    '11111111-1111-1111-1111-111111111111'
+),
+(
+    gen_random_uuid(),
+    1,
+    8999.99,
+    'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+    '22222222-2222-2222-2222-222222222222'
+);
+
+INSERT INTO payments (
+    id,
+    amount,
+    payment_status,
+    payment_method,
+    order_id
+)
+VALUES (
+    gen_random_uuid(),
+    24999.89,
+    'PENDING',
+    'CREDIT_CARD',
+    'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'
+);

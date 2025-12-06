@@ -8,6 +8,9 @@ import org.acme.models.enums.PaymentMethod;
 
 public record OrderRequestDTO(
 
+    @NotNull(message = "O ID do usuário é obrigatório")
+    String userId,
+
     @NotNull(message = "O endereço é obrigatório")
     String addressId,
 

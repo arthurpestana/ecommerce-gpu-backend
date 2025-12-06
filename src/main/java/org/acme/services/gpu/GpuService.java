@@ -21,8 +21,7 @@ public interface GpuService {
     PaginationResponseDTO<GpuResponseDTO> findByManufacturer(String manufacturerId, PaginationRequestDTO pagination);
     PaginationResponseDTO<GpuResponseDTO> findByPriceRange(BigDecimal min, BigDecimal max, PaginationRequestDTO pagination);
     PaginationResponseDTO<GpuResponseDTO> findByTechnology(String techName, PaginationRequestDTO pagination);
-    PaginationResponseDTO<GpuResponseDTO> findByCategory(String categoryName, PaginationRequestDTO pagination);
-    PaginationResponseDTO<GpuResponseDTO> findFiltered(String name, String modelId, String manufacturerId, BigDecimal minPrice, BigDecimal maxPrice, Boolean isActive, PaginationRequestDTO pagination);
+    PaginationResponseDTO<GpuResponseDTO> findFiltered(String name, String modelId, String manufacturerId, BigDecimal minPrice, BigDecimal maxPrice, Boolean isActive, String categoryId, PaginationRequestDTO pagination);
 
     GpuResponseDTO createGpu(GpuRequestDTO dto, List<FileUpload> imagesUpload);
     GpuResponseDTO updateGpu(String id, GpuRequestDTO dto, List<FileUpload> imagesUpload);

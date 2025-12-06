@@ -62,18 +62,25 @@ public class GpuResource {
             @QueryParam("name") String name,
             @QueryParam("modelId") String modelId,
             @QueryParam("manufacturerId") String manufacturerId,
+            @QueryParam("categoryId") String categoryId,
             @QueryParam("minPrice") BigDecimal minPrice,
             @QueryParam("maxPrice") BigDecimal maxPrice,
             @QueryParam("isActive") Boolean isActive,
             @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("limit") @DefaultValue("10") int limit) {
-
-        page = Math.max(0, page);
-        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
-
         PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
-        var gpus = gpuService.findFiltered(name, modelId, manufacturerId, minPrice, maxPrice, isActive, pagination);
-        return Response.ok(gpus).build();
+
+        return Response.ok(
+                gpuService.findFiltered(
+                        name,
+                        modelId,
+                        manufacturerId,
+                        minPrice,
+                        maxPrice,
+                        isActive,
+                        categoryId,
+                        pagination))
+                .build();
     }
 
     @GET
@@ -123,19 +130,6 @@ public class GpuResource {
             @QueryParam("limit") @DefaultValue("10") int limit) {
         PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
         return Response.ok(gpuService.findByTechnology(tech, pagination)).build();
-    }
-
-    @GET
-    @Path("/category/{category}")
-    public Response findByCategory(
-            @PathParam("category") String category,
-            @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("limit") @DefaultValue("10") int limit) {
-        page = Math.max(0, page);
-        limit = Math.min(Math.max(1, limit), MAX_PAGE_SIZE);
-
-        PaginationRequestDTO pagination = new PaginationRequestDTO(page, limit);
-        return Response.ok(gpuService.findByCategory(category, pagination)).build();
     }
 
     @GET
